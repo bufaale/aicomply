@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.vercel/
+.env*.local
+.env
+*.tsbuildinfo
+next-env.d.ts
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/tests/coverage/
+coverage/
+.DS_Store

@@ -1,0 +1,21 @@
+{
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "functions": {
+    "src/app/api/stripe/webhook/route.ts": {
+      "maxDuration": 30
+    },
+    "src/app/api/contracts/generate/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/contracts/regenerate-clause/route.ts": {
+      "maxDuration": 30
+    },
+    "src/app/api/contracts/*/pdf/route.ts": {
+      "maxDuration": 30
+    },
+    "src/app/api/ai/analyze-contract/route.ts": {
+      "maxDuration": 60
+    }
+  }
+}
