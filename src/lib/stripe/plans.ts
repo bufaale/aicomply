@@ -9,6 +9,7 @@ export interface PricingPlan {
     systems_max: number;
     classifications_per_month: number;
     dpia_export: boolean;
+    fria_export: boolean;
     literacy_register: boolean;
     team_seats: number;
   };
@@ -33,6 +34,7 @@ export const pricingPlans: PricingPlan[] = [
       systems_max: 1,
       classifications_per_month: 3,
       dpia_export: false,
+      fria_export: false,
       literacy_register: false,
       team_seats: 1,
     },
@@ -51,14 +53,17 @@ export const pricingPlans: PricingPlan[] = [
       "Up to 20 AI systems tracked",
       "Unlimited re-classification",
       "Article 4 AI literacy register",
+      "FRIA generator (Art. 27) — 3 per month",
       "Compliance checklist per system",
       "PDF export of inventory",
+      "Public trust page (aicomply.app/trust/...)",
       "Email support",
     ],
     limits: {
       systems_max: 20,
       classifications_per_month: Infinity,
       dpia_export: false,
+      fria_export: true,
       literacy_register: true,
       team_seats: 3,
     },
@@ -77,6 +82,7 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       "Unlimited AI systems",
       "DPIA generator (GDPR Art. 35)",
+      "Unlimited FRIAs (Art. 27 EU AI Act)",
       "Audit-ready evidence vault",
       "Public compliance page",
       "White-label PDF reports",
@@ -87,10 +93,41 @@ export const pricingPlans: PricingPlan[] = [
       systems_max: Infinity,
       classifications_per_month: Infinity,
       dpia_export: true,
+      fria_export: true,
       literacy_register: true,
       team_seats: 10,
     },
     cta: "Go Business",
+  },
+  {
+    id: "regulated",
+    name: "Regulated",
+    description: "Public bodies, credit scoring, insurance pricing — full deployer pack",
+    price: { monthly: 299, yearly: 2990 },
+    stripePriceId: {
+      monthly: (process.env.NEXT_PUBLIC_STRIPE_REGULATED_MONTHLY_PRICE_ID || "").trim(),
+      yearly: (process.env.NEXT_PUBLIC_STRIPE_REGULATED_YEARLY_PRICE_ID || "").trim(),
+    },
+    features: [
+      "Everything in Business",
+      "Annex IV technical documentation pack",
+      "Conformity assessment workflow (Annex VI self-cert)",
+      "Notified-body handoff package",
+      "Harmonised-standards cross-walk (prEN 18286, ISO 42001, NIST AI RMF)",
+      "GPAI upstream-model signatory tracking",
+      "Authority notification templates (Art. 27(3))",
+      "Dedicated DPO reviewer account",
+      "Priority SLA — next-business-day",
+    ],
+    limits: {
+      systems_max: Infinity,
+      classifications_per_month: Infinity,
+      dpia_export: true,
+      fria_export: true,
+      literacy_register: true,
+      team_seats: 25,
+    },
+    cta: "Contact for regulated",
   },
 ];
 

@@ -64,7 +64,7 @@ export function Pricing() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="mt-12 grid gap-8 md:grid-cols-3">
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {pricingPlans.map((plan) => {
             const price = isYearly ? plan.price.yearly : plan.price.monthly;
             const period = isYearly ? "/yr" : "/mo";
