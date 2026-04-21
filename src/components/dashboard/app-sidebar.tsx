@@ -12,6 +12,7 @@ import {
   ShieldAlert,
   Scale,
   Globe,
+  FileCheck,
 } from "lucide-react";
 import {
   Sidebar,
@@ -33,6 +34,7 @@ const mainNav = [
   { title: "Add System", href: "/dashboard/ai-systems/new", icon: PlusCircle },
   { title: "Risk Review", href: "/dashboard/risk", icon: ShieldAlert },
   { title: "FRIA (Art. 27)", href: "/dashboard/fria", icon: Scale },
+  { title: "DPIA (GDPR Art. 35)", href: "/dashboard/dpia", icon: FileCheck },
   { title: "AI Literacy (Art. 4)", href: "/dashboard/literacy", icon: GraduationCap },
   { title: "Public trust page", href: "/dashboard/trust", icon: Globe },
 ];

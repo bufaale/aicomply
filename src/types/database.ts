@@ -21,6 +21,39 @@ export interface Profile {
   updated_at: string;
 }
 
+export interface DpiaAssessment {
+  [key: string]: unknown;
+  id: string;
+  user_id: string;
+  system_id: string | null;
+  processing_description: string | null;
+  processing_purposes: string | null;
+  data_categories: string | null;
+  data_subjects: string | null;
+  recipients: string | null;
+  retention_period: string | null;
+  international_transfers: string | null;
+  legal_basis: string | null;
+  necessity_justification: string | null;
+  proportionality_assessment: string | null;
+  data_minimisation: string | null;
+  rights_at_risk: string | null;
+  risk_scenarios: string | null;
+  likelihood_severity: string | null;
+  technical_measures: string | null;
+  organisational_measures: string | null;
+  data_subject_rights: string | null;
+  breach_procedure: string | null;
+  dpo_consultation: string | null;
+  status: "draft" | "in_review" | "approved" | "superseded";
+  reviewer_email: string | null;
+  reviewed_at: string | null;
+  supervisory_authority_consulted: boolean;
+  supervisory_consultation_date: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface FriaAssessment {
   [key: string]: unknown;
   id: string;
@@ -183,6 +216,12 @@ export interface Database {
         Row: FriaAssessment;
         Insert: Partial<FriaAssessment> & { user_id: string };
         Update: Partial<FriaAssessment>;
+        Relationships: [];
+      };
+      dpia_assessments: {
+        Row: DpiaAssessment;
+        Insert: Partial<DpiaAssessment> & { user_id: string };
+        Update: Partial<DpiaAssessment>;
         Relationships: [];
       };
     };
