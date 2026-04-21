@@ -21,6 +21,42 @@ export interface Profile {
   updated_at: string;
 }
 
+export interface AnnexIvDocument {
+  [key: string]: unknown;
+  id: string;
+  user_id: string;
+  system_id: string | null;
+  system_intended_purpose: string | null;
+  system_developer_identity: string | null;
+  system_version_and_date: string | null;
+  system_interaction_with_hardware: string | null;
+  system_software_versions: string | null;
+  system_deployment_forms: string | null;
+  system_hardware_description: string | null;
+  design_methods_and_steps: string | null;
+  design_specifications: string | null;
+  system_architecture: string | null;
+  data_requirements: string | null;
+  human_oversight_assessment: string | null;
+  accuracy_and_performance_metrics: string | null;
+  capabilities_and_limitations: string | null;
+  degrees_of_accuracy: string | null;
+  foreseeable_unintended_outcomes: string | null;
+  specifications_input_data: string | null;
+  risk_management_description: string | null;
+  lifecycle_changes: string | null;
+  harmonised_standards_applied: string | null;
+  conformity_assessment_procedure: string | null;
+  conformity_assessment_changes: string | null;
+  post_market_monitoring_plan: string | null;
+  additional_information: string | null;
+  status: "draft" | "in_review" | "approved" | "superseded";
+  reviewer_email: string | null;
+  reviewed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface DpiaAssessment {
   [key: string]: unknown;
   id: string;
@@ -222,6 +258,12 @@ export interface Database {
         Row: DpiaAssessment;
         Insert: Partial<DpiaAssessment> & { user_id: string };
         Update: Partial<DpiaAssessment>;
+        Relationships: [];
+      };
+      annex_iv_documents: {
+        Row: AnnexIvDocument;
+        Insert: Partial<AnnexIvDocument> & { user_id: string };
+        Update: Partial<AnnexIvDocument>;
         Relationships: [];
       };
     };

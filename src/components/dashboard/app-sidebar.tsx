@@ -13,6 +13,7 @@ import {
   Scale,
   Globe,
   FileCheck,
+  FileArchive,
 } from "lucide-react";
 import {
   Sidebar,
@@ -35,6 +36,7 @@ const mainNav = [
   { title: "Risk Review", href: "/dashboard/risk", icon: ShieldAlert },
   { title: "FRIA (Art. 27)", href: "/dashboard/fria", icon: Scale },
   { title: "DPIA (GDPR Art. 35)", href: "/dashboard/dpia", icon: FileCheck },
+  { title: "Annex IV (Art. 11)", href: "/dashboard/annex-iv", icon: FileArchive },
   { title: "AI Literacy (Art. 4)", href: "/dashboard/literacy", icon: GraduationCap },
   { title: "Public trust page", href: "/dashboard/trust", icon: Globe },
 ];
