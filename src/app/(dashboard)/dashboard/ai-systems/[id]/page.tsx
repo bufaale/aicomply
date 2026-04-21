@@ -60,6 +60,14 @@ export default function SystemDetailPage({ params }: { params: Promise<{ id: str
   const [obligations, setObligations] = useState<Obligation[]>([]);
   const [loading, setLoading] = useState(true);
   const [reclassifying, setReclassifying] = useState(false);
+  const [gpai, setGpai] = useState<{
+    provider: string;
+    status: "signed" | "declined" | "uncertain" | "not-gpai";
+    status_label: string;
+    notes: string;
+    source: string | null;
+    deployer_guidance: string;
+  } | null>(null);
 
   async function load() {
     try {
@@ -72,6 +80,16 @@ export default function SystemDetailPage({ params }: { params: Promise<{ id: str
       toast.error("Failed to load system");
     } finally {
       setLoading(false);
+    }
+
+    try {
+      const gpaiRes = await fetch(`/api/ai-systems/${id}/gpai`);
+      if (gpaiRes.ok) {
+        const gpaiJson = await gpaiRes.json();
+        setGpai(gpaiJson.analysis ?? null);
+      }
+    } catch {
+      // non-fatal — GPAI callout is advisory
     }
   }
 
@@ -184,6 +202,48 @@ export default function SystemDetailPage({ params }: { params: Promise<{ id: str
           )}
         </CardContent>
       </Card>
+
+      {gpai && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span className="flex items-center gap-2">
+                GPAI upstream · {gpai.provider}
+              </span>
+              <Badge
+                className={
+                  gpai.status === "signed"
+                    ? "bg-emerald-600 text-white"
+                    : gpai.status === "declined"
+                      ? "bg-red-600 text-white"
+                      : "bg-amber-500 text-white"
+                }
+              >
+                {gpai.status_label}
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm">
+            <p className="leading-relaxed">{gpai.notes}</p>
+            <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Deployer guidance
+              </p>
+              <p className="mt-1 leading-relaxed">{gpai.deployer_guidance}</p>
+            </div>
+            {gpai.source && (
+              <a
+                href={gpai.source}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-sky-700 hover:underline"
+              >
+                Source ↗
+              </a>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>
