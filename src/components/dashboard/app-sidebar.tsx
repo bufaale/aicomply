@@ -14,6 +14,7 @@ import {
   Globe,
   FileCheck,
   FileArchive,
+  Radar,
 } from "lucide-react";
 import {
   Sidebar,
@@ -33,6 +34,7 @@ const mainNav = [
   { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "AI Systems", href: "/dashboard/ai-systems", icon: Boxes },
   { title: "Add System", href: "/dashboard/ai-systems/new", icon: PlusCircle },
+  { title: "Shadow-AI discovery", href: "/dashboard/discovery", icon: Radar },
   { title: "Risk Review", href: "/dashboard/risk", icon: ShieldAlert },
   { title: "FRIA (Art. 27)", href: "/dashboard/fria", icon: Scale },
   { title: "DPIA (GDPR Art. 35)", href: "/dashboard/dpia", icon: FileCheck },
