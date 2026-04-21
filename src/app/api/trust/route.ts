@@ -10,7 +10,23 @@ const updateSchema = z.object({
     .regex(/^[a-z0-9][a-z0-9-]{2,40}$/, "Slug must be 3-41 chars, lowercase, start with alphanumeric")
     .optional(),
   trust_display_name: z.string().trim().max(120).optional(),
-  trust_website: z.string().url().max(200).optional().or(z.literal("")),
+  trust_website: z
+    .string()
+    .url()
+    .max(200)
+    .refine(
+      (v) => {
+        try {
+          const p = new URL(v);
+          return p.protocol === "http:" || p.protocol === "https:";
+        } catch {
+          return false;
+        }
+      },
+      { message: "Only http:// or https:// URLs are allowed" },
+    )
+    .optional()
+    .or(z.literal("")),
 });
 
 export async function GET() {

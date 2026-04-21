@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { generateDpiaDraft, type DpiaInput } from "@/lib/gdpr/dpia-generator";
+import { applyRateLimit, createAiLimiter } from "@/lib/security/rate-limit";
 
 const createSchema = z.object({
   system_id: z.string().uuid().optional(),
@@ -39,6 +40,23 @@ export async function POST(req: Request) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  // Plan gate: DPIA generator is a Pro+ feature.
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("subscription_plan")
+    .eq("id", user.id)
+    .single();
+  const plan = (profile?.subscription_plan ?? "free").toLowerCase();
+  if (plan === "free") {
+    return NextResponse.json(
+      { error: "DPIA generation requires the Pro, Business, or Regulated plan." },
+      { status: 402 },
+    );
+  }
+
+  const limited = await applyRateLimit(`dpia:${user.id}`, createAiLimiter(plan));
+  if (limited) return limited;
 
   let body: unknown;
   try {

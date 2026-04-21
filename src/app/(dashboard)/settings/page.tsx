@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { DeleteAccountButton } from "@/components/settings/delete-account-button";
 
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
@@ -320,6 +321,8 @@ export default function SettingsPage() {
           </form>
         </CardContent>
       </Card>
+
+      <DeleteAccountButton />
     </div>
   );
 }

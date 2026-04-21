@@ -21,7 +21,8 @@ export const config = {
     "/login",
     "/signup",
     "/auth/:path*",
-    "/api/stripe/:path*",
+    // Every API route receives security headers + session refresh.
+    "/api/:path*",
     "/c/:path*",
     "/",
     "/terms",

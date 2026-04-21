@@ -130,17 +130,33 @@ export default async function TrustPage({
             <h1 className="mt-2 font-display text-3xl font-bold tracking-tight sm:text-4xl">
               {displayName}
             </h1>
-            {profile.trust_website && (
-              <a
-                href={profile.trust_website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center gap-1.5 text-sm text-sky-700 hover:underline"
-              >
-                {profile.trust_website}
-                <ExternalLink className="h-3.5 w-3.5" />
-              </a>
-            )}
+            {(() => {
+              const rawWebsite = profile.trust_website as string | null;
+              if (!rawWebsite) return null;
+              // Validate scheme to block javascript:, data:, vbscript: etc.
+              // Any stored value that doesn't parse as http/https is suppressed.
+              let safeHref: string | null = null;
+              try {
+                const parsed = new URL(rawWebsite);
+                if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+                  safeHref = parsed.toString();
+                }
+              } catch {
+                safeHref = null;
+              }
+              if (!safeHref) return null;
+              return (
+                <a
+                  href={safeHref}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  className="mt-2 inline-flex items-center gap-1.5 text-sm text-sky-700 hover:underline"
+                >
+                  {safeHref}
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              );
+            })()}
           </div>
 
           <div className="flex items-center gap-3 rounded-md border border-slate-200 bg-white px-5 py-4">

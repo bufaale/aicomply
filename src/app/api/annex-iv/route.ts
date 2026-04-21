@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { generateAnnexIvDraft, type AnnexIvInput } from "@/lib/eu-ai-act/annex-iv-generator";
+import { applyRateLimit, createAiLimiter } from "@/lib/security/rate-limit";
 
 const createSchema = z.object({
   system_id: z.string().uuid().optional(),
@@ -42,6 +43,9 @@ export async function POST(req: Request) {
       { status: 402 },
     );
   }
+
+  const limited = await applyRateLimit(`annex-iv:${user.id}`, createAiLimiter(plan));
+  if (limited) return limited;
 
   let body: unknown;
   try {
