@@ -12,6 +12,37 @@ export interface Profile {
   subscription_status: "active" | "trialing" | "past_due" | "canceled" | "free";
   subscription_plan: string | null;
   role: "user" | "admin";
+  // Public trust page (migration 00010)
+  trust_slug: string | null;
+  trust_enabled: boolean;
+  trust_display_name: string | null;
+  trust_website: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FriaAssessment {
+  [key: string]: unknown;
+  id: string;
+  user_id: string;
+  system_id: string | null;
+  system_description: string | null;
+  deployment_purpose: string | null;
+  deployment_duration: string | null;
+  affected_groups: string | null;
+  frequency_of_use: string | null;
+  rights_at_risk: string | null;
+  harm_scenarios: string | null;
+  oversight_measures: string | null;
+  oversight_personnel: string | null;
+  mitigation_measures: string | null;
+  escalation_procedure: string | null;
+  governance_framework: string | null;
+  complaint_mechanism: string | null;
+  status: "draft" | "in_review" | "approved" | "superseded";
+  reviewer_email: string | null;
+  reviewed_at: string | null;
+  notified_authority_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -146,6 +177,12 @@ export interface Database {
           training_date: string;
         };
         Update: Partial<AILiteracyRecord>;
+        Relationships: [];
+      };
+      fria_assessments: {
+        Row: FriaAssessment;
+        Insert: Partial<FriaAssessment> & { user_id: string };
+        Update: Partial<FriaAssessment>;
         Relationships: [];
       };
     };
