@@ -14,7 +14,7 @@ export default defineConfig({
   use: {
     baseURL:
       process.env.TEST_BASE_URL ||
-      "http://localhost:3015",
+      "https://app-16-aicomply.vercel.app",
     headless: true,
     screenshot: "only-on-failure",
     trace: "on-first-retry",
