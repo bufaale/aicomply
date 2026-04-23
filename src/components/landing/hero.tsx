@@ -30,7 +30,7 @@ export function Hero() {
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
             Inventory every AI tool your team uses, auto-classify each one against the 4 EU AI Act risk tiers, and generate Article 4 AI literacy registers — before penalties start. Vanta charges €50,000+. AIComply starts at{" "}
-            <span className="font-semibold text-white">$49/mo</span>.
+            <span className="font-semibold text-white">$79/mo</span>.
           </p>
 
           <figure className="mt-8 max-w-xl rounded-md border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
