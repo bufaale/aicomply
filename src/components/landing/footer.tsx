@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { siteConfig } from "@/config/site";
 
@@ -36,6 +37,27 @@ const footerLinks = {
   },
 };
 
+const crossPromo = [
+  {
+    name: "AccessiScan",
+    tagline: "WCAG 2.2 + VPAT + GitHub Action",
+    price: "From $19/mo",
+    href: "https://app-04-ada-scanner.vercel.app",
+  },
+  {
+    name: "CallSpark",
+    tagline: "Bilingual AI voice agent · warm transfer",
+    price: "From $69/mo",
+    href: "https://app-02-voice-agent.vercel.app",
+  },
+  {
+    name: "See all 15 tools",
+    tagline: "Pipo Labs · SaaS suite for operators",
+    price: "piposlab.com",
+    href: "https://piposlab.com",
+  },
+];
+
 export function Footer() {
   return (
     <footer className="border-t">
@@ -59,6 +81,41 @@ export function Footer() {
             </div>
           ))}
         </div>
+
+        <section aria-labelledby="cross-promo" className="mt-12 border-t pt-8">
+          <p
+            id="cross-promo"
+            className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground"
+          >
+            More from Pipo Labs
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {crossPromo.map((app) => (
+              <a
+                key={app.name}
+                href={app.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col rounded-lg border bg-muted/30 p-4 transition-colors hover:bg-muted/60"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold">{app.name}</span>
+                  <ArrowUpRight
+                    className="text-muted-foreground h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    aria-hidden
+                  />
+                </div>
+                <p className="text-muted-foreground mt-1 text-sm">
+                  {app.tagline}
+                </p>
+                <p className="text-muted-foreground mt-auto pt-3 font-mono text-xs">
+                  {app.price}
+                </p>
+              </a>
+            ))}
+          </div>
+        </section>
+
         <Separator className="my-8" />
         <p className="text-muted-foreground text-center text-sm">
           &copy; {new Date().getFullYear()} {siteConfig.name}. All rights
