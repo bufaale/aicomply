@@ -65,7 +65,7 @@ export default async function BlogPostPage({
             Free AI system classification + FRIA in 15 minutes
           </p>
           <p className="mt-2 text-sm text-slate-700">
-            No credit card. From $49/month when you need 20 systems, unlimited
+            No credit card. From $79/month when you need 20 systems, unlimited
             FRIAs and DPIAs, and the public trust page.
           </p>
           <Link

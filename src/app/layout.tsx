@@ -12,7 +12,7 @@ const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", 
 export const metadata: Metadata = {
   title: "AIComply — EU AI Act compliance for SMBs",
   description:
-    "Inventory every AI tool, auto-classify risk against the 4 EU AI Act tiers, and generate Article 4 AI literacy registers and DPIAs — before the August 2, 2026 deadline. From $49/mo.",
+    "Inventory every AI tool, auto-classify against the 4 EU AI Act tiers, generate Article 4 literacy registers, FRIAs, DPIAs, and a full Annex IV technical pack — before the August 2, 2026 deadline. From $79/mo, 100x cheaper than Vanta.",
 };
 
 export default function RootLayout({
