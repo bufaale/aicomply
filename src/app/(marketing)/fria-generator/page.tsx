@@ -48,7 +48,7 @@ export default function FriaGeneratorPage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              href="/pricing"
+              href="/#pricing"
               className="inline-flex h-12 items-center justify-center rounded-md border border-white/25 bg-transparent px-6 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white/5"
             >
               See plans
