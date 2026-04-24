@@ -208,3 +208,49 @@ export async function deleteTestClient(clientId: string) {
     },
   });
 }
+
+// --- Link audit ---
+
+/**
+ * Return the HTTP status of every internal link on the current page.
+ * Skips external, mailto:, tel:, hash-only, and API routes. Used by
+ * link-audit.spec.ts to assert no 404s ship.
+ */
+export async function auditPageLinks(
+  page: Page,
+  opts: { ignore?: RegExp[] } = {},
+): Promise<Array<{ href: string; status: number }>> {
+  const anchors = await page.locator("a[href]").all();
+  const raw: string[] = [];
+  for (const a of anchors) {
+    const h = await a.getAttribute("href");
+    if (h) raw.push(h);
+  }
+  const hrefs = Array.from(
+    new Set(
+      raw.filter(
+        (h) => h.startsWith("/") && !h.startsWith("//") && !h.startsWith("/api/"),
+      ),
+    ),
+  );
+  const ignore = opts.ignore || [];
+  const filtered = hrefs.filter((h) => !ignore.some((re) => re.test(h)));
+  const baseURL = page.url().split("/").slice(0, 3).join("/");
+  const cookieHeader = (await page.context().cookies())
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
+  const out: Array<{ href: string; status: number }> = [];
+  for (const href of filtered) {
+    try {
+      const r = await fetch(baseURL + href, {
+        method: "GET",
+        headers: { Cookie: cookieHeader },
+        redirect: "manual",
+      });
+      out.push({ href, status: r.status });
+    } catch {
+      out.push({ href, status: 0 });
+    }
+  }
+  return out;
+}
