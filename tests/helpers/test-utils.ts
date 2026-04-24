@@ -12,7 +12,13 @@ const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY!;
 
 // --- Test User Management ---
 
-export async function createTestUser(prefix: string) {
+/**
+ * Create a confirmed test user. Optionally seed a tier in one call — the tier
+ * must be defined AFTER createTestUser returns because the handle_new_user
+ * trigger creates the profile row asynchronously; setUserPlan retries until
+ * the row exists.
+ */
+export async function createTestUser(prefix: string, tier: Tier = "free") {
   const email = `e2e-${prefix}-${Date.now()}@test.example.com`;
 
   const res = await fetch(`${SUPABASE_URL}/auth/v1/admin/users`, {
@@ -36,7 +42,13 @@ export async function createTestUser(prefix: string) {
   }
 
   const data = await res.json();
-  return { id: data.id as string, email };
+  const userId = data.id as string;
+
+  if (tier !== "free") {
+    await setUserPlan(userId, tier);
+  }
+
+  return { id: userId, email };
 }
 
 export async function deleteTestUser(userId: string) {
@@ -114,31 +126,49 @@ export async function loginViaAPI(
 
 // --- Plan Management ---
 
-export async function setUserPlan(
-  userId: string,
-  plan: "free" | "pro" | "business",
-) {
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/profiles?id=eq.${userId}`,
-    {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-        apikey: SUPABASE_SERVICE_ROLE_KEY,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({
-        subscription_plan: plan,
-        subscription_status: plan === "free" ? "free" : "active",
-      }),
-    },
-  );
+export type Tier = "free" | "pro" | "business" | "regulated";
+export const ALL_TIERS: Tier[] = ["free", "pro", "business", "regulated"];
+export const PAID_TIERS: Tier[] = ["pro", "business", "regulated"];
 
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Failed to set plan: ${res.status} ${body}`);
+/**
+ * Set the user's subscription tier directly on the profiles row.
+ *
+ * PATCH with Prefer: return=minimal returns 204 whether rows were updated or
+ * not — so we use return=representation and verify the row came back. If the
+ * array is empty, the profile row wasn't there yet (the handle_new_user
+ * trigger hadn't fired); we wait for the trigger to land and retry.
+ */
+export async function setUserPlan(userId: string, plan: Tier) {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/profiles?id=eq.${userId}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+          apikey: SUPABASE_SERVICE_ROLE_KEY,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+        },
+        body: JSON.stringify({
+          subscription_plan: plan,
+          subscription_status: plan === "free" ? "free" : "active",
+        }),
+      },
+    );
+
+    if (!res.ok) {
+      const body = await res.text();
+      throw new Error(`Failed to set plan: ${res.status} ${body}`);
+    }
+    const rows = await res.json();
+    if (Array.isArray(rows) && rows.length > 0 && rows[0].subscription_plan === plan) {
+      return;
+    }
+    // Profile row not present yet — wait for the trigger and retry.
+    await new Promise((r) => setTimeout(r, 500));
   }
+  throw new Error(`setUserPlan: profile for ${userId} never accepted plan=${plan} after 5 attempts`);
 }
 
 // --- Data Helpers ---
