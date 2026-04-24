@@ -115,7 +115,10 @@ export async function generateFriaDraft(input: FriaInput): Promise<FriaDraft> {
     model: "claude-haiku-4-5-20251001",
     max_tokens: 3000,
     system: SYSTEM_PROMPT,
-    messages: [{ role: "user", content: buildUserPrompt(input) }],
+    messages: [
+      { role: "user", content: buildUserPrompt(input) },
+      { role: "assistant", content: "{" },
+    ],
   });
 
   const textBlock = response.content.find((c) => c.type === "text");
@@ -123,13 +126,12 @@ export async function generateFriaDraft(input: FriaInput): Promise<FriaDraft> {
     throw new Error("AI response did not contain text content");
   }
 
-  const raw = textBlock.text.trim();
-  const jsonStart = raw.indexOf("{");
-  const jsonEnd = raw.lastIndexOf("}");
-  if (jsonStart === -1 || jsonEnd === -1) {
-    throw new Error("AI response did not contain JSON");
+  const jsonText = "{" + textBlock.text;
+  const jsonEnd = jsonText.lastIndexOf("}");
+  if (jsonEnd === -1) {
+    throw new Error("AI response was truncated before JSON closed");
   }
 
-  const parsed = JSON.parse(raw.slice(jsonStart, jsonEnd + 1));
+  const parsed = JSON.parse(jsonText.slice(0, jsonEnd + 1));
   return FriaDraftSchema.parse(parsed);
 }
