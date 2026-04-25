@@ -68,7 +68,7 @@ export const pricingPlans: PricingPlan[] = [
       team_seats: 3,
     },
     highlighted: true,
-    cta: "Start 14-day trial",
+    cta: "Start free — upgrade anytime",
   },
   {
     id: "business",
