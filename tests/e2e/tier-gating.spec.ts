@@ -31,6 +31,8 @@ test.afterAll(async () => {
 });
 
 test.describe("Tier gating — DPIA generator (Pro+)", () => {
+  test.setTimeout(120_000);
+
   test("free user: POST /api/dpia returns 402 (paid feature)", async ({ page }) => {
     await loginViaUI(page, users.free.email);
     const res = await page.request.post("/api/dpia", {
@@ -38,6 +40,7 @@ test.describe("Tier gating — DPIA generator (Pro+)", () => {
         processing_name: "test",
         processing_purpose: "test purpose for DPIA generation",
       },
+      timeout: 90_000,
     });
     // Either 402 (payment required) or 403 (forbidden) is acceptable gating.
     expect([402, 403]).toContain(res.status());
@@ -51,6 +54,7 @@ test.describe("Tier gating — DPIA generator (Pro+)", () => {
           processing_name: "E2E test processing",
           processing_purpose: "Verify that Pro+ tiers can access the DPIA generator endpoint without hitting paywall",
         },
+        timeout: 90_000,
       });
       const status = res.status();
       if (status === 402) {
@@ -66,10 +70,13 @@ test.describe("Tier gating — DPIA generator (Pro+)", () => {
 });
 
 test.describe("Tier gating — FRIA generator (Pro+)", () => {
+  test.setTimeout(120_000);
+
   test("free user: POST /api/fria returns 402", async ({ page }) => {
     await loginViaUI(page, users.free.email);
     const res = await page.request.post("/api/fria", {
       data: { system_name: "test", system_purpose: "test" },
+      timeout: 90_000,
     });
     expect([402, 403]).toContain(res.status());
   });
@@ -83,6 +90,7 @@ test.describe("Tier gating — FRIA generator (Pro+)", () => {
           system_purpose: "Verify FRIA tier access",
           deployer_type: "private_sector",
         },
+        timeout: 90_000,
       });
       const status = res.status();
       if (status === 402) {
@@ -95,6 +103,8 @@ test.describe("Tier gating — FRIA generator (Pro+)", () => {
 });
 
 test.describe("Tier gating — Annex IV generator (Regulated ONLY)", () => {
+  test.setTimeout(120_000);
+
   // Per /api/annex-iv/route.ts:40 the check is `plan !== "regulated"` so every
   // lower tier (free/pro/business) must receive 402.
   for (const tier of ["free", "pro", "business"] as const) {
@@ -102,13 +112,14 @@ test.describe("Tier gating — Annex IV generator (Regulated ONLY)", () => {
       await loginViaUI(page, users[tier].email);
       const res = await page.request.post("/api/annex-iv", {
         data: { system_name: "test", system_purpose: "test" },
+        timeout: 90_000,
       });
       expect(res.status()).toBe(402);
     });
   }
 
   test("regulated user: POST /api/annex-iv passes the tier gate", async ({ page }) => {
-    test.setTimeout(120_000); // route calls Claude with max_tokens=6000
+    // test.setTimeout handled at describe level; kept here for clarity
     await loginViaUI(page, users.regulated.email);
     const res = await page.request.post("/api/annex-iv", {
       data: {
@@ -116,6 +127,7 @@ test.describe("Tier gating — Annex IV generator (Regulated ONLY)", () => {
         system_purpose: "Verify Annex IV tier access",
         annex_iii_category: "biometric_identification",
       },
+      timeout: 90_000,
     });
     const status = res.status();
     if (status === 402) {
