@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { siteConfig } from "@/config/site";
+import { CROSS_PROMO_OTHER_APPS as crossPromo } from "@/config/cross-promo";
 
 const footerLinks = {
   product: {
@@ -28,26 +29,6 @@ const footerLinks = {
   },
 };
 
-const crossPromo = [
-  {
-    name: "AccessiScan",
-    tagline: "WCAG 2.2 + VPAT + GitHub Action",
-    price: "From $19/mo",
-    href: "https://app-04-ada-scanner.vercel.app",
-  },
-  {
-    name: "CallSpark",
-    tagline: "Bilingual AI voice agent · warm transfer",
-    price: "From $69/mo",
-    href: "https://app-02-voice-agent.vercel.app",
-  },
-  {
-    name: "See all 15 tools",
-    tagline: "Pipo Labs · SaaS suite for operators",
-    price: "piposlab.com",
-    href: "https://piposlab.com",
-  },
-];
 
 export function Footer() {
   return (
