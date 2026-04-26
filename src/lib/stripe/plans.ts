@@ -58,7 +58,7 @@ export const pricingPlans: PricingPlan[] = [
       "FRIA generator (Art. 27) — 3 per month",
       "Compliance checklist per system",
       "PDF export of inventory",
-      "Public trust page (aicomply.app/trust/...)",
+      "Public trust page (aicomply.piposlab.com/trust/...)",
       "Email support",
     ],
     limits: {

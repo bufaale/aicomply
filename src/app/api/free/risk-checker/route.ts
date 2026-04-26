@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     result,
     email_captured: Boolean(parsed.data.email),
     upgrade_cta:
-      "Generate a defensible DPIA + FRIA + Annex IV documentation at https://aicomply.app/signup",
+      "Generate a defensible DPIA + FRIA + Annex IV documentation at https://aicomply.piposlab.com/signup",
   });
 }
 
