@@ -114,19 +114,27 @@ export function Pricing() {
                     variant={plan.highlighted ? "default" : "outline"}
                     asChild
                   >
-                    <Link
-                      href={
-                        isLoggedIn
-                          ? plan.id === "free"
-                            ? "/dashboard"
-                            : "/settings/billing"
-                          : "/signup"
-                      }
-                    >
-                      {isLoggedIn && plan.id === "free"
-                        ? "Go to Dashboard"
-                        : plan.cta}
-                    </Link>
+                    {plan.contactSales ? (
+                      <Link
+                        href={`mailto:alex@piposlab.com?subject=AIComply%20${encodeURIComponent(plan.name)}%20tier%20inquiry`}
+                      >
+                        {plan.cta}
+                      </Link>
+                    ) : (
+                      <Link
+                        href={
+                          isLoggedIn
+                            ? plan.id === "free"
+                              ? "/dashboard"
+                              : "/settings/billing"
+                            : "/signup"
+                        }
+                      >
+                        {isLoggedIn && plan.id === "free"
+                          ? "Go to Dashboard"
+                          : plan.cta}
+                      </Link>
+                    )}
                   </Button>
                 </CardFooter>
               </Card>

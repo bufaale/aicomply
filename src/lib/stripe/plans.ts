@@ -15,6 +15,8 @@ export interface PricingPlan {
   };
   highlighted?: boolean;
   cta: string;
+  /** When true, CTA links to contact form instead of Stripe Checkout. */
+  contactSales?: boolean;
 }
 
 export const pricingPlans: PricingPlan[] = [
@@ -128,6 +130,34 @@ export const pricingPlans: PricingPlan[] = [
       team_seats: 25,
     },
     cta: "Contact for regulated",
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise",
+    description: "Multi-jurisdiction compliance ops + GPAI signatory + indemnity insurance",
+    price: { monthly: 4999, yearly: 49990 },
+    stripePriceId: { monthly: "", yearly: "" },
+    features: [
+      "Everything in Regulated",
+      "Multi-jurisdiction matrix (EU + UK + US state laws)",
+      "E&O indemnity insurance partner intro (up to €1M)",
+      "Custom Annex IV templates per business unit",
+      "GPAI upstream signatory orchestration",
+      "Slack Connect channel + dedicated success engineer",
+      "Quarterly executive compliance review",
+      "Custom SLA + 24/7 incident response",
+      "Unlimited team seats",
+    ],
+    limits: {
+      systems_max: Infinity,
+      classifications_per_month: Infinity,
+      dpia_export: true,
+      fria_export: true,
+      literacy_register: true,
+      team_seats: Infinity,
+    },
+    cta: "Contact sales",
+    contactSales: true,
   },
 ];
 
