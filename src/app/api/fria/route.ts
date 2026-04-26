@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { generateFriaDraft, type FriaInput } from "@/lib/eu-ai-act/fria-generator";
 import { applyRateLimit, createAiLimiter } from "@/lib/security/rate-limit";
+import { logAuditEvent, extractAuditContext } from "@/lib/audit/log";
 
 const createSchema = z.object({
   system_id: z.string().uuid().optional(),
@@ -123,6 +124,16 @@ export async function POST(req: Request) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    void logAuditEvent({
+      userId: user.id,
+      eventType: "fria.generated",
+      resource: `fria:${data.id}`,
+      summary: `Generated FRIA draft${parsed.data.system_id ? ` for system ${parsed.data.system_id}` : ""}`,
+      meta: { fria_id: data.id, system_id: parsed.data.system_id ?? null },
+      ...extractAuditContext(req.headers),
+    });
+
     return NextResponse.json({ assessment: data });
   } catch (err) {
     const message = err instanceof Error ? err.message : "FRIA draft generation failed";
