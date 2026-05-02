@@ -58,8 +58,8 @@ export function Hero() {
               className="h-12 rounded-md bg-[#dc2626] px-6 text-base font-semibold text-white shadow-none transition-colors hover:bg-[#b91c1c]"
               asChild
             >
-              <Link href="/signup">
-                Start free audit
+              <Link href="/free/risk-checker">
+                Check my AI system — free, 30 sec
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -69,13 +69,12 @@ export function Hero() {
               className="h-12 rounded-md border-white/25 bg-transparent px-6 text-base font-semibold text-white shadow-none transition-colors hover:border-white hover:bg-white/5"
               asChild
             >
-              <Link href="#pricing">See pricing</Link>
+              <Link href="/signup">Start full audit</Link>
             </Button>
           </div>
 
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-white/55">
-            <TrustItem>No credit card required</TrustItem>
-            <TrustItem>Free tier · 1 AI system</TrustItem>
+            <TrustItem>10 questions · no signup · instant classification</TrustItem>
             <TrustItem>1000x cheaper than Vanta</TrustItem>
           </div>
         </div>
