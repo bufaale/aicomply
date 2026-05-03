@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu } from "lucide-react";
@@ -26,8 +27,15 @@ export function Navbar() {
   return (
     <header className="bg-background/80 sticky top-0 z-50 w-full border-b backdrop-blur-lg">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        {/* Logo */}
         <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+          <Image
+            src="/logo-mark.png"
+            alt=""
+            width={28}
+            height={28}
+            priority
+            className="h-7 w-7"
+          />
           {siteConfig.name}
         </Link>
 
