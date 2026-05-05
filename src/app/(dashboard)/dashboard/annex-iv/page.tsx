@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileArchive, PlusCircle, Loader2, FileText, Lock } from "lucide-react";
+import { CrossWalkBanner } from "@/components/cross-walk-banner";
 
 interface AnnexIvDoc {
   id: string;
@@ -70,6 +71,8 @@ export default function AnnexIvListPage() {
           submissions directly to their quality manager or audit team.
         </p>
       </div>
+
+      <CrossWalkBanner />
 
       {loading ? (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">

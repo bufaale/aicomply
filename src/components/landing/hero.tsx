@@ -76,6 +76,7 @@ export function Hero() {
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-white/55">
             <TrustItem>10 questions · no signup · instant classification</TrustItem>
             <TrustItem>1000x cheaper than Vanta</TrustItem>
+            <TrustItem>SOC2 / ISO 27001 cross-walk · 71% pre-satisfied</TrustItem>
           </div>
         </div>
 
