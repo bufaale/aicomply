@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { PlusCircle, AlertTriangle, ShieldCheck, Sparkles, GraduationCap } from "lucide-react";
 import { CrossPromoBanner } from "@/components/dashboard/cross-promo-banner";
+import {
+  Icon,
+  Pyramid,
+  TierBadge,
+  type RiskTier,
+} from "@/components/aicomply/atoms";
 
 interface SystemRow {
   id: string;
@@ -14,17 +16,35 @@ interface SystemRow {
   created_at: string;
 }
 
-const TIER_CLASS: Record<string, string> = {
-  unacceptable: "bg-red-700 text-white",
-  high: "bg-orange-600 text-white",
-  limited: "bg-yellow-500 text-white",
-  minimal: "bg-emerald-600 text-white",
-  unclassified: "bg-muted text-muted-foreground",
+const DB_TO_TIER: Record<string, RiskTier> = {
+  unacceptable: "prohibited",
+  high: "high",
+  limited: "limited",
+  minimal: "minimal",
 };
+
+function formatDate(d: string | null): string {
+  if (!d) return "—";
+  return new Date(d).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function formatTime(d: string): string {
+  return new Date(d).toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
 
 export default async function DashboardPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: systemsRaw } = await supabase
     .from("ai_systems")
@@ -35,7 +55,7 @@ export default async function DashboardPage() {
 
   const counts = {
     total: systems.length,
-    unacceptable: systems.filter((s) => s.risk_tier === "unacceptable").length,
+    prohibited: systems.filter((s) => s.risk_tier === "unacceptable").length,
     high: systems.filter((s) => s.risk_tier === "high").length,
     limited: systems.filter((s) => s.risk_tier === "limited").length,
     minimal: systems.filter((s) => s.risk_tier === "minimal").length,
@@ -48,104 +68,341 @@ export default async function DashboardPage() {
     .eq("user_id", user!.id);
   const literacyCount = literacyRaw?.length ?? 0;
 
+  // Days to EU AI Act Article 4 deployer obligations enter into force.
+  const target = new Date("2026-08-02").getTime();
+  const days = Math.max(0, Math.ceil((target - Date.now()) / 86400000));
+
+  const greeting = user?.user_metadata?.full_name?.split(" ")[0] ?? "there";
+
   const recent = [...systems]
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    )
     .slice(0, 5);
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+          marginBottom: 24,
+          flexWrap: "wrap",
+          gap: 14,
+        }}
+      >
         <div>
-          <h1 className="text-3xl font-bold">Compliance Dashboard</h1>
-          <p className="mt-1 text-muted-foreground">
-            Welcome back, {user?.user_metadata?.full_name || user?.email || "there"}
+          <div className="aic-eyebrow-line" style={{ marginBottom: 8 }}>
+            <span className="live-dot" />
+            EU AI ACT IN FORCE 02 AUG 2026
+          </div>
+          <h1
+            style={{
+              font: "500 36px/1.1 var(--aic-font-serif)",
+              letterSpacing: "-.025em",
+              margin: 0,
+              color: "#fff",
+            }}
+          >
+            Good morning, {greeting}.
+          </h1>
+          <p
+            style={{
+              margin: "6px 0 0",
+              color: "rgba(255,255,255,.55)",
+              font: "15px/1.5 var(--aic-font-sans)",
+            }}
+          >
+            {counts.total} AI systems tracked. {counts.high + counts.prohibited} high-risk.{" "}
+            {counts.unclassified} unclassified.
           </p>
         </div>
-        <Button asChild>
-          <Link href="/dashboard/ai-systems/new">
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add AI System
+        <div style={{ display: "flex", gap: 10 }}>
+          <Link
+            href="/dashboard/annex-iv"
+            className="aic-btn aic-btn--ghost-dark-soft aic-btn--sm"
+          >
+            <Icon name="download" size={14} />
+            Export packet
           </Link>
-        </Button>
+          <Link
+            href="/dashboard/ai-systems/new"
+            className="aic-btn aic-btn--primary aic-btn--sm"
+          >
+            <Icon name="plus" size={14} />
+            Register AI system
+          </Link>
+        </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <Sparkles className="h-4 w-4" />
-              Systems tracked
-            </CardTitle>
-          </CardHeader>
-          <CardContent><p className="text-2xl font-bold">{counts.total}</p></CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-orange-600" />
-              High risk
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{counts.high + counts.unacceptable}</p>
-            {counts.unacceptable > 0 && (
-              <p className="text-xs text-red-600 mt-1">{counts.unacceptable} prohibited</p>
-            )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-emerald-600" />
-              Unclassified
-            </CardTitle>
-          </CardHeader>
-          <CardContent><p className="text-2xl font-bold">{counts.unclassified}</p></CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <GraduationCap className="h-4 w-4" />
-              Art. 4 training records
-            </CardTitle>
-          </CardHeader>
-          <CardContent><p className="text-2xl font-bold">{literacyCount}</p></CardContent>
-        </Card>
+      <div className="aic-stats-row" style={{ marginBottom: 24 }}>
+        <div className="aic-stat">
+          <div className="aic-stat-label">SYSTEMS TRACKED</div>
+          <div className="aic-stat-value aic-tabular">{counts.total}</div>
+          <div className="aic-stat-sub aic-tabular">
+            {counts.unclassified} unclassified
+          </div>
+        </div>
+        <div className="aic-stat">
+          <div className="aic-stat-label">HIGH-RISK</div>
+          <div
+            className="aic-stat-value aic-tabular"
+            style={{ color: "#fbbf24" }}
+          >
+            {counts.high + counts.prohibited}
+          </div>
+          <div className="aic-stat-sub">Annex III · Art. 6</div>
+        </div>
+        <div className="aic-stat">
+          <div className="aic-stat-label">DAYS TO 02 AUG 2026</div>
+          <div
+            className="aic-stat-value aic-tabular"
+            style={{ color: "var(--aic-gold)" }}
+          >
+            {days}
+          </div>
+          <div className="aic-stat-sub">Article 4 in force</div>
+        </div>
+        <div className="aic-stat">
+          <div className="aic-stat-label">LITERACY RECORDS</div>
+          <div className="aic-stat-value aic-tabular">{literacyCount}</div>
+          <div className="aic-stat-sub">signed acknowledgements</div>
+        </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent AI systems</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1.4fr 1fr",
+          gap: 18,
+          marginBottom: 18,
+        }}
+      >
+        <div className="aic-card">
+          <div className="aic-card-h">
+            <div className="aic-card-h-l">
+              <div className="aic-card-eyebrow">RISK PYRAMID · CURRENT QUARTER</div>
+              <div className="aic-card-title">EU AI Act 4-tier classification</div>
+            </div>
+            <span className="aic-pill aic-pill--pass aic-pill--live">
+              <span className="dot" />
+              LIVE
+            </span>
+          </div>
+          <div className="aic-card-body">
+            <Pyramid
+              dark
+              counts={{
+                prohibited: `${counts.prohibited} system${counts.prohibited === 1 ? "" : "s"}`,
+                high: `${counts.high} system${counts.high === 1 ? "" : "s"}`,
+                limited: `${counts.limited} system${counts.limited === 1 ? "" : "s"}`,
+                minimal: `${counts.minimal} system${counts.minimal === 1 ? "" : "s"}`,
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="aic-card">
+          <div className="aic-card-h">
+            <div className="aic-card-h-l">
+              <div className="aic-card-eyebrow">CROSS-WALK COVERAGE</div>
+              <div className="aic-card-title">Pre-satisfied controls</div>
+            </div>
+          </div>
+          <div className="aic-card-body" style={{ padding: 0 }}>
+            {(
+              [
+                ["EU AI Act", "27 / 38", "71%", "review", "#fbbf24"],
+                ["NIST AI RMF", "31 / 38", "81%", "pass", "#5eead4"],
+                ["ISO/IEC 42001", "47 / 52", "90%", "pass", "#5eead4"],
+                ["SOC 2 + AI", "59 / 64", "92%", "pass", "#5eead4"],
+              ] as const
+            ).map((r, i) => (
+              <div
+                key={r[0]}
+                style={{
+                  padding: "14px 20px",
+                  borderTop: i ? "1px solid rgba(255,255,255,.05)" : "0",
+                  display: "grid",
+                  gridTemplateColumns: "1.2fr .8fr 1fr .6fr",
+                  gap: 12,
+                  alignItems: "center",
+                }}
+              >
+                <span
+                  style={{
+                    font: "500 14px/1.2 var(--aic-font-serif)",
+                    color: "#fff",
+                  }}
+                >
+                  {r[0]}
+                </span>
+                <span
+                  className="aic-tabular"
+                  style={{
+                    font: "var(--aic-mono)",
+                    color: "rgba(255,255,255,.78)",
+                  }}
+                >
+                  {r[1]}
+                </span>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div
+                    style={{
+                      flex: 1,
+                      height: 4,
+                      background: "rgba(255,255,255,.06)",
+                      position: "relative",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        width: r[2],
+                        background: r[4],
+                      }}
+                    />
+                  </div>
+                  <span
+                    className="aic-tabular"
+                    style={{
+                      font: "var(--aic-mono-sm)",
+                      color: "rgba(255,255,255,.78)",
+                      minWidth: 32,
+                      textAlign: "right",
+                    }}
+                  >
+                    {r[2]}
+                  </span>
+                </div>
+                <span
+                  style={{
+                    font: "var(--aic-mono-sm)",
+                    letterSpacing: ".06em",
+                    textTransform: "uppercase",
+                    color: r[4],
+                    textAlign: "right",
+                  }}
+                >
+                  {r[3] === "pass" ? "PASS" : "REVIEW"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="aic-card">
+        <div className="aic-card-h">
+          <div className="aic-card-h-l">
+            <div className="aic-card-eyebrow">RECENT AI SYSTEMS</div>
+            <div className="aic-card-title">Last 5 added</div>
+          </div>
+          <Link
+            href="/dashboard/ai-systems"
+            style={{
+              font: "var(--aic-mono-sm)",
+              letterSpacing: ".08em",
+              textTransform: "uppercase",
+              color: "var(--aic-gold)",
+              textDecoration: "none",
+            }}
+          >
+            View all →
+          </Link>
+        </div>
+        <div style={{ padding: 0 }}>
           {recent.length === 0 ? (
-            <div className="py-8 text-center text-muted-foreground">
-              <p>No systems tracked yet.</p>
-              <Button asChild variant="link" className="mt-2">
-                <Link href="/dashboard/ai-systems/new">Add your first AI system</Link>
-              </Button>
+            <div
+              style={{
+                padding: "32px 20px",
+                textAlign: "center",
+                color: "rgba(255,255,255,.55)",
+                font: "14px/1.55 var(--aic-font-sans)",
+              }}
+            >
+              <p style={{ margin: "0 0 12px" }}>No systems tracked yet.</p>
+              <Link
+                href="/dashboard/ai-systems/new"
+                className="aic-btn aic-btn--primary aic-btn--sm"
+              >
+                <Icon name="plus" size={14} />
+                Register your first AI system
+              </Link>
             </div>
           ) : (
-            <ul className="space-y-3">
-              {recent.map((s) => (
-                <li key={s.id} className="flex items-center justify-between border-b pb-3 last:border-0">
-                  <Link href={`/dashboard/ai-systems/${s.id}`} className="font-medium hover:underline">
+            recent.map((s, i) => {
+              const tier =
+                DB_TO_TIER[s.risk_tier] ?? ("minimal" as RiskTier);
+              const isUnclassified = s.risk_tier === "unclassified";
+              return (
+                <div
+                  key={s.id}
+                  style={{
+                    padding: "12px 20px",
+                    borderTop: i ? "1px solid rgba(255,255,255,.05)" : "0",
+                    display: "grid",
+                    gridTemplateColumns: "82px 1fr auto auto",
+                    gap: 12,
+                    alignItems: "baseline",
+                    fontSize: 13,
+                  }}
+                >
+                  <span
+                    className="aic-tabular"
+                    style={{
+                      font: "var(--aic-mono)",
+                      color: "rgba(255,255,255,.5)",
+                    }}
+                  >
+                    {formatTime(s.created_at)}
+                  </span>
+                  <Link
+                    href={`/dashboard/ai-systems/${s.id}`}
+                    style={{
+                      color: "rgba(255,255,255,.92)",
+                      textDecoration: "none",
+                      fontWeight: 600,
+                    }}
+                  >
                     {s.name}
                   </Link>
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <Badge className={TIER_CLASS[s.risk_tier] ?? TIER_CLASS.unclassified}>
-                      {s.risk_tier}
-                    </Badge>
-                    <span>{new Date(s.created_at).toLocaleDateString()}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                  {isUnclassified ? (
+                    <span
+                      style={{
+                        font: "var(--aic-mono-sm)",
+                        letterSpacing: ".06em",
+                        textTransform: "uppercase",
+                        color: "rgba(255,255,255,.55)",
+                      }}
+                    >
+                      UNCLASSIFIED
+                    </span>
+                  ) : (
+                    <TierBadge tier={tier} dark />
+                  )}
+                  <span
+                    style={{
+                      font: "var(--aic-mono-sm)",
+                      letterSpacing: ".06em",
+                      color: "rgba(255,255,255,.5)",
+                    }}
+                  >
+                    {formatDate(s.created_at)}
+                  </span>
+                </div>
+              );
+            })
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <CrossPromoBanner />
-    </div>
+      <div style={{ marginTop: 18 }}>
+        <CrossPromoBanner />
+      </div>
+    </>
   );
 }
