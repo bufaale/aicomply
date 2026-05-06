@@ -1,62 +1,57 @@
-"use client";
-
 import "../aicomply-v2.css";
-import { usePathname } from "next/navigation";
-import {
-  AppMobileNav,
-  AppSidebar,
-  AppTopbar,
-} from "@/components/aicomply/atoms";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { DashboardShell } from "./dashboard-shell";
 
-/**
- * Authenticated app layout — Bloomberg-terminal × boutique-law-firm
- * chrome (dark sidebar, gold-accent topbar, mobile bottom-tab fallback)
- * ported from Claude Designs Screen07 + supporting atoms.
- *
- * Auth checks happen at the page level (each page calls
- * supabase.auth.getUser() and redirects on null) — same as the previous
- * shadcn-based layout. This layout is purely visual.
- */
-
-const PATH_TO_CRUMBS: Array<{ prefix: string; crumbs: readonly string[] }> = [
-  { prefix: "/dashboard/ai-systems", crumbs: ["WORKSPACE", "AI SYSTEMS"] },
-  { prefix: "/dashboard/risk", crumbs: ["WORKSPACE", "RISK REGISTER"] },
-  { prefix: "/dashboard/annex-iv", crumbs: ["WORKSPACE", "ANNEX IV"] },
-  { prefix: "/dashboard/literacy", crumbs: ["WORKSPACE", "ARTICLE 4 LITERACY"] },
-  { prefix: "/dashboard/dpia", crumbs: ["WORKSPACE", "DPIA"] },
-  { prefix: "/dashboard/fria", crumbs: ["WORKSPACE", "FRIA"] },
-  { prefix: "/dashboard/discovery", crumbs: ["WORKSPACE", "DISCOVERY"] },
-  { prefix: "/dashboard/trust", crumbs: ["WORKSPACE", "TRUST"] },
-  { prefix: "/dashboard", crumbs: ["WORKSPACE", "DASHBOARD"] },
-  { prefix: "/settings/billing", crumbs: ["ACCOUNT", "BILLING"] },
-  { prefix: "/settings/api-keys", crumbs: ["ACCOUNT", "API KEYS"] },
-  { prefix: "/settings/profile", crumbs: ["ACCOUNT", "PROFILE"] },
-  { prefix: "/settings", crumbs: ["ACCOUNT", "SETTINGS"] },
-];
-
-function crumbsFor(pathname: string): readonly string[] {
-  for (const { prefix, crumbs } of PATH_TO_CRUMBS) {
-    if (pathname === prefix || pathname.startsWith(`${prefix}/`)) return crumbs;
-  }
-  return ["WORKSPACE"];
+function planLabel(plan: string | null | undefined, status: string | null | undefined): string {
+  if (status !== "active" || !plan || plan === "free") return "Free plan";
+  return `${plan.charAt(0).toUpperCase()}${plan.slice(1)} plan`;
 }
 
-export default function DashboardLayout({
+function initialsOf(value: string | null | undefined, fallback: string): string {
+  if (!value) return fallback;
+  const parts = value.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return fallback;
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname() ?? "";
-  const crumbs = crumbsFor(pathname);
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("full_name, company_name, subscription_plan, subscription_status")
+    .eq("id", user.id)
+    .single();
+
+  const { count: systemCount } = await supabase
+    .from("ai_systems")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", user.id);
+
+  const workspaceName = profile?.company_name?.trim() || profile?.full_name?.trim() || "Workspace";
+  const tracked = systemCount ?? 0;
+  const workspacePlan = `${planLabel(profile?.subscription_plan, profile?.subscription_status)} · ${tracked} system${tracked === 1 ? "" : "s"}`;
+  const workspaceInitials = initialsOf(profile?.company_name ?? profile?.full_name, "WS");
+  const userInitials = initialsOf(profile?.full_name ?? user.email, user.email?.[0]?.toUpperCase() ?? "U");
 
   return (
-    <div className="aic-app">
-      <AppSidebar activePath={pathname} />
-      <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
-        <AppTopbar crumbs={[...crumbs]} />
-        <main className="aic-app-content">{children}</main>
-      </div>
-      <AppMobileNav activePath={pathname} />
-    </div>
+    <DashboardShell
+      workspaceName={workspaceName}
+      workspacePlan={workspacePlan}
+      workspaceInitials={workspaceInitials}
+      userInitials={userInitials}
+    >
+      {children}
+    </DashboardShell>
   );
 }
