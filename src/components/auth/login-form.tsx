@@ -4,18 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { OAuthButtons } from "./oauth-buttons";
+import { Icon } from "@/components/aicomply/atoms";
 
 export function LoginForm() {
   const router = useRouter();
@@ -23,6 +12,29 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState(false);
+
+  const handleGoogle = async () => {
+    setOauthLoading(true);
+    setError(null);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/confirm`,
+          queryParams: { prompt: "select_account" },
+        },
+      });
+      if (error) {
+        setError(error.message);
+        setOauthLoading(false);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "OAuth failed");
+      setOauthLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,10 +42,7 @@ export function LoginForm() {
     setError(null);
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
       setError(error.message);
@@ -46,71 +55,158 @@ export function LoginForm() {
   };
 
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Welcome back</CardTitle>
-        <CardDescription>Sign in to your account</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <OAuthButtons />
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+    <>
+      <div
+        className="aic-eyebrow-line aic-eyebrow-line--light"
+        style={{ marginBottom: 10 }}
+      >
+        SIGN IN · WORKSPACE
+      </div>
+      <h1
+        style={{
+          font: "500 32px/1.15 var(--aic-font-serif)",
+          letterSpacing: "-.02em",
+          margin: "0 0 8px",
+        }}
+      >
+        Welcome back.
+      </h1>
+      <p
+        style={{
+          font: "14px/1.55 var(--aic-font-sans)",
+          color: "var(--aic-fg-l-3)",
+          margin: "0 0 26px",
+        }}
+      >
+        New here?{" "}
+        <Link
+          href="/signup"
+          style={{
+            color: "var(--aic-gold-deep)",
+            fontWeight: 600,
+            textDecoration: "underline",
+          }}
+        >
+          Create a workspace.
+        </Link>
+      </p>
+
+      <button
+        type="button"
+        className="aic-btn aic-btn--ghost-light aic-btn--block"
+        onClick={handleGoogle}
+        disabled={oauthLoading}
+        style={{ gap: 10 }}
+      >
+        <Icon name="google" size={18} />
+        {oauthLoading ? "Connecting…" : "Continue with Google"}
+      </button>
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          margin: "22px 0",
+          font: "var(--aic-mono-sm)",
+          letterSpacing: ".12em",
+          textTransform: "uppercase",
+          color: "var(--aic-fg-l-4)",
+        }}
+      >
+        <span style={{ flex: 1, height: 1, background: "var(--aic-paper-line-soft)" }} />
+        or
+        <span style={{ flex: 1, height: 1, background: "var(--aic-paper-line-soft)" }} />
+      </div>
+
+      <form onSubmit={handleSubmit}>
+        {error && (
+          <div
+            role="alert"
+            style={{
+              padding: "10px 12px",
+              marginBottom: 14,
+              border: "1px solid var(--aic-fail-deep)",
+              background: "rgba(248,113,113,0.08)",
+              color: "var(--aic-fail-deep)",
+              font: "13px/1.4 var(--aic-font-sans)",
+            }}
+          >
+            {error}
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
+        )}
+        <div style={{ marginBottom: 14 }}>
+          <label htmlFor="email" className="aic-label-mono">
+            EMAIL
+          </label>
+          <input
+            id="email"
+            className="aic-input"
+            type="email"
+            placeholder="jamie@acme.health"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+          />
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-              {error}
-            </div>
-          )}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+        <div style={{ marginBottom: 18 }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
+              marginBottom: 6,
+            }}
+          >
+            <label htmlFor="password" className="aic-label-mono" style={{ margin: 0 }}>
+              PASSWORD
+            </label>
+            <Link
+              href="/forgot-password"
+              style={{
+                font: "var(--aic-mono-sm)",
+                letterSpacing: ".08em",
+                textTransform: "uppercase",
+                color: "var(--aic-gold-deep)",
+                textDecoration: "none",
+              }}
+            >
+              Forgot?
+            </Link>
           </div>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
-              <Link
-                href="/forgot-password"
-                className="text-sm text-muted-foreground hover:underline"
-              >
-                Forgot password?
-              </Link>
-            </div>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Signing in..." : "Sign in"}
-          </Button>
-        </form>
-      </CardContent>
-      <CardFooter className="justify-center">
-        <p className="text-sm text-muted-foreground">
-          Don&apos;t have an account?{" "}
-          <Link href="/signup" className="font-medium text-primary hover:underline">
-            Sign up
-          </Link>
-        </p>
-      </CardFooter>
-    </Card>
+          <input
+            id="password"
+            className="aic-input"
+            type="password"
+            placeholder="••••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="current-password"
+          />
+        </div>
+        <button
+          type="submit"
+          className="aic-btn aic-btn--primary aic-btn--block aic-btn--lg"
+          disabled={loading}
+        >
+          {loading ? "Signing in…" : "Sign in →"}
+        </button>
+      </form>
+
+      <p
+        style={{
+          marginTop: 24,
+          font: "12px/1.55 var(--aic-font-sans)",
+          color: "var(--aic-fg-l-4)",
+        }}
+      >
+        Protected by SOC 2 Type II controls.{" "}
+        <span style={{ font: "var(--aic-mono-sm)", letterSpacing: ".08em" }}>
+          REG. NO. AIC-2026
+        </span>
+      </p>
+    </>
   );
 }

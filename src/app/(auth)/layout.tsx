@@ -1,23 +1,26 @@
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import "../aicomply-v2.css";
+import { AuthSide, MktHeader } from "@/components/aicomply/atoms";
 
+/**
+ * Auth route group layout — renders the v2 split-panel chrome
+ * (MktHeader + dark AuthSide left pane + paper form-wrap right pane).
+ * Each form page provides only the inside-of-the-form-wrap content; the
+ * heading, eyebrow, and Google button live with the form.
+ */
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
-      <div className="w-full max-w-md space-y-4">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to home
-        </Link>
-        {children}
+    <>
+      <MktHeader />
+      <div className="aic-auth-stage">
+        <AuthSide />
+        <div className="aic-auth-form-wrap">
+          <div className="aic-auth-form">{children}</div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -138,3 +138,328 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ============================================================
+   AIComply v2 design system — "Regulated Authority"
+   ──────────────────────────────────────────────────────────
+   Bloomberg-terminal × boutique law firm. Dark surface with
+   gold accent + teal liveness. Fraunces serif for display,
+   Inter for body, JetBrains Mono for codes/serials.
+   Ported verbatim from Claude Designs export tokens.css +
+   styles.css. Use --aic-* prefix to avoid collisions with the
+   shadcn/Tailwind tokens above.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root {
+  /* ── Surfaces (dark — authenticated app + hero) ── */
+  --aic-surface-0: #0a1020;
+  --aic-surface-1: #0f172a;
+  --aic-surface-2: #131c30;
+  --aic-surface-3: #1a2440;
+  --aic-surface-line: rgba(212, 175, 55, 0.18);
+  --aic-surface-line-soft: rgba(255, 255, 255, 0.08);
+
+  /* ── Surfaces (light — marketing/auth) ── */
+  --aic-paper-0: #fdfcf7;
+  --aic-paper-1: #ffffff;
+  --aic-paper-2: #f7f5ee;
+  --aic-paper-line: #1c2030;
+  --aic-paper-line-soft: #e6e2d3;
+
+  /* ── Foreground on dark ── */
+  --aic-fg-d-1: rgba(255, 255, 255, 0.94);
+  --aic-fg-d-2: rgba(255, 255, 255, 0.72);
+  --aic-fg-d-3: rgba(255, 255, 255, 0.50);
+  --aic-fg-d-4: rgba(255, 255, 255, 0.34);
+
+  /* ── Foreground on light ── */
+  --aic-fg-l-1: #0f172a;
+  --aic-fg-l-2: #334155;
+  --aic-fg-l-3: #475569;
+  --aic-fg-l-4: #64748b;
+
+  /* ── Brand accent · gold ── */
+  --aic-gold: #d4af37;
+  --aic-gold-hover: #e8c14a;
+  --aic-gold-press: #b89327;
+  --aic-gold-soft: rgba(212, 175, 55, 0.14);
+  --aic-gold-deep: #7a5e0f;
+  --aic-gold-ink: #0f172a;
+
+  /* ── Liveness · teal ── */
+  --aic-teal: #14b8a6;
+  --aic-teal-soft: rgba(20, 184, 166, 0.16);
+  --aic-teal-deep: #0f766e;
+
+  /* ── Status ── */
+  --aic-pass: #14b8a6; --aic-pass-deep: #0f766e;
+  --aic-warn: #d4af37; --aic-warn-deep: #7a5e0f;
+  --aic-fail: #f87171; --aic-fail-deep: #b91c1c;
+  --aic-info: #93c5fd; --aic-info-deep: #1d4ed8;
+  --aic-na: #64748b; --aic-na-deep: #475569;
+
+  /* ── Type ── */
+  --aic-font-serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --aic-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --aic-font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  --aic-display-1: 600 64px/1.04 var(--aic-font-serif);
+  --aic-display-2: 500 48px/1.06 var(--aic-font-serif);
+  --aic-display-3: 500 36px/1.10 var(--aic-font-serif);
+  --aic-h1: 600 32px/1.18 var(--aic-font-serif);
+  --aic-h2: 600 24px/1.22 var(--aic-font-serif);
+  --aic-h3: 600 19px/1.30 var(--aic-font-sans);
+  --aic-h4: 600 16px/1.30 var(--aic-font-sans);
+
+  --aic-body-lg: 500 17px/1.55 var(--aic-font-sans);
+  --aic-body: 400 15px/1.55 var(--aic-font-sans);
+  --aic-body-sm: 400 13px/1.50 var(--aic-font-sans);
+  --aic-meta: 500 12px/1.40 var(--aic-font-sans);
+
+  --aic-mono-lg: 500 14px/1.45 var(--aic-font-mono);
+  --aic-mono: 500 12px/1.45 var(--aic-font-mono);
+  --aic-mono-sm: 500 11px/1.40 var(--aic-font-mono);
+
+  --aic-eyebrow: 600 11px/1.4 var(--aic-font-mono);
+  --aic-tracking-eyebrow: 0.14em;
+  --aic-tracking-tight: -0.03em;
+  --aic-tracking-display: -0.025em;
+
+  /* ── Spacing scale ── */
+  --aic-space-0: 0; --aic-space-1: 2px; --aic-space-2: 4px; --aic-space-3: 8px;
+  --aic-space-4: 12px; --aic-space-5: 16px; --aic-space-6: 20px; --aic-space-7: 24px;
+  --aic-space-8: 32px; --aic-space-9: 40px; --aic-space-10: 56px;
+  --aic-space-11: 72px; --aic-space-12: 96px;
+
+  /* ── Radii (square-by-default, subtle for actions) ── */
+  --aic-radius-0: 0;
+  --aic-radius-1: 2px;
+  --aic-radius-2: 4px;
+  --aic-radius-pill: 999px;
+
+  /* ── Borders / inset highlights / focus ── */
+  --aic-border-1: 1px solid var(--aic-surface-line);
+  --aic-border-1-soft: 1px solid var(--aic-surface-line-soft);
+  --aic-border-l-1: 1px solid var(--aic-paper-line);
+  --aic-border-l-soft: 1px solid var(--aic-paper-line-soft);
+  --aic-border-l-rule: 2px solid var(--aic-paper-line);
+  --aic-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --aic-inset-gold: inset 0 0 0 1px rgba(212, 175, 55, 0.22);
+  --aic-focus-ring: 0 0 0 2px var(--aic-surface-1), 0 0 0 4px var(--aic-gold);
+
+  /* ── Motion ── */
+  --aic-ease-out: cubic-bezier(.2,.7,.2,1);
+  --aic-dur-1: 80ms;
+  --aic-dur-2: 140ms;
+  --aic-dur-3: 220ms;
+
+  /* ── Layout ── */
+  --aic-container: 1200px;
+  --aic-container-wide: 1280px;
+  --aic-gutter: 56px;
+}
+
+/* Tailwind v4 theme bridge — exposes a subset of aic-* tokens as
+   utilities so JSX can use them with className when convenient. The
+   verbose CSS classes below cover the parts the prototype JSX hard-
+   codes (.btn, .card, .pill, .stats-row, table.t, .container, etc). */
+@theme inline {
+  --color-aic-surface-0: var(--aic-surface-0);
+  --color-aic-surface-1: var(--aic-surface-1);
+  --color-aic-surface-2: var(--aic-surface-2);
+  --color-aic-surface-3: var(--aic-surface-3);
+  --color-aic-paper-0: var(--aic-paper-0);
+  --color-aic-paper-1: var(--aic-paper-1);
+  --color-aic-paper-2: var(--aic-paper-2);
+  --color-aic-fg-l-1: var(--aic-fg-l-1);
+  --color-aic-fg-l-2: var(--aic-fg-l-2);
+  --color-aic-fg-l-3: var(--aic-fg-l-3);
+  --color-aic-fg-l-4: var(--aic-fg-l-4);
+  --color-aic-gold: var(--aic-gold);
+  --color-aic-gold-deep: var(--aic-gold-deep);
+  --color-aic-teal: var(--aic-teal);
+  --color-aic-teal-deep: var(--aic-teal-deep);
+  --color-aic-pass: var(--aic-pass);
+  --color-aic-warn: var(--aic-warn);
+  --color-aic-fail: var(--aic-fail);
+  --color-aic-info: var(--aic-info);
+  --color-aic-na: var(--aic-na);
+  --font-aic-serif: "Fraunces", Georgia, serif;
+  --font-aic-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ── AIComply semantic typography classes ── */
+.aic-display-1 { font: var(--aic-display-1); letter-spacing: var(--aic-tracking-display); }
+.aic-display-2 { font: var(--aic-display-2); letter-spacing: var(--aic-tracking-display); }
+.aic-display-3 { font: var(--aic-display-3); letter-spacing: var(--aic-tracking-display); }
+.aic-h1 { font: var(--aic-h1); letter-spacing: var(--aic-tracking-display); }
+.aic-h2 { font: var(--aic-h2); letter-spacing: -0.015em; }
+.aic-h3 { font: var(--aic-h3); letter-spacing: -0.01em; }
+.aic-h4 { font: var(--aic-h4); }
+.aic-body-lg { font: var(--aic-body-lg); }
+.aic-body { font: var(--aic-body); }
+.aic-body-sm { font: var(--aic-body-sm); }
+.aic-meta { font: var(--aic-meta); color: var(--aic-fg-l-3); }
+.aic-mono { font: var(--aic-mono); }
+.aic-mono-lg { font: var(--aic-mono-lg); }
+.aic-mono-sm { font: var(--aic-mono-sm); }
+.aic-eyebrow {
+  font: var(--aic-eyebrow);
+  letter-spacing: var(--aic-tracking-eyebrow);
+  text-transform: uppercase;
+}
+.aic-display-italic { font-style: italic; font-weight: 500; }
+
+/* ── Layout containers (scoped to aic-* root to avoid colliding with
+   shadcn .container utility) ── */
+.aic-container { max-width: 1280px; margin: 0 auto; padding: 0 56px; }
+.aic-container-narrow { max-width: 1100px; margin: 0 auto; padding: 0 56px; }
+
+/* ── Buttons ── */
+.aic-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 18px; border: 0; border-radius: 2px;
+  font: 600 14px/1 var(--aic-font-sans); cursor: pointer; letter-spacing: 0.005em;
+  text-decoration: none;
+  transition: background .14s ease, border-color .14s ease, color .14s ease;
+}
+.aic-btn--primary { background: var(--aic-gold); color: var(--aic-gold-ink); }
+.aic-btn--primary:hover { background: var(--aic-gold-hover); }
+.aic-btn--ghost-dark { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.18); }
+.aic-btn--ghost-dark:hover { border-color: rgba(255,255,255,.34); background: rgba(255,255,255,.04); }
+.aic-btn--ghost-dark-soft { background: transparent; color: rgba(255,255,255,.94); border: 1px solid rgba(255,255,255,.12); }
+.aic-btn--ghost-dark-soft:hover { border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.04); }
+.aic-btn--ghost-light { background: var(--aic-paper-1); color: var(--aic-fg-l-1); border: 1px solid var(--aic-paper-line); }
+.aic-btn--ghost-light:hover { background: var(--aic-paper-2); }
+.aic-btn--ink { background: var(--aic-fg-l-1); color: #fff; }
+.aic-btn--sm { min-height: 36px; padding: 0 12px; font-size: 13px; }
+.aic-btn--lg { min-height: 52px; padding: 0 22px; font-size: 15px; }
+.aic-btn--block { width: 100%; }
+
+/* ── Pills ── */
+.aic-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: var(--aic-mono-sm); letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 9px; border-radius: 2px;
+  border: 1px solid currentColor;
+}
+.aic-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.aic-pill--live .dot { box-shadow: 0 0 0 4px rgba(20,184,166,.18); animation: aic-pulse 1.6s infinite; }
+@keyframes aic-pulse {
+  0%,100% { box-shadow: 0 0 0 4px rgba(20,184,166,.20); }
+  50% { box-shadow: 0 0 0 6px rgba(20,184,166,.06); }
+}
+.aic-pill--pass { color: #14b8a6; }
+.aic-pill--review { color: #d4af37; }
+.aic-pill--fail { color: #f87171; }
+.aic-pill--neutral { color: rgba(255,255,255,.55); }
+.aic-pill--on-light.aic-pill--pass { color: var(--aic-pass-deep); }
+.aic-pill--on-light.aic-pill--review { color: var(--aic-warn-deep); }
+.aic-pill--on-light.aic-pill--fail { color: var(--aic-fail-deep); }
+.aic-pill--on-light.aic-pill--neutral { color: var(--aic-fg-l-4); }
+
+/* ── Eyebrows (gold uppercase mono) ── */
+.aic-eyebrow-line {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: var(--aic-eyebrow); letter-spacing: var(--aic-tracking-eyebrow);
+  text-transform: uppercase; color: var(--aic-gold);
+}
+.aic-eyebrow-line--light { color: var(--aic-gold-deep); }
+.aic-eyebrow-line .live-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: #14b8a6;
+  box-shadow: 0 0 0 4px rgba(20,184,166,.18);
+}
+
+/* ── Form inputs ── */
+.aic-input, .aic-select {
+  width: 100%; box-sizing: border-box;
+  min-height: 44px; padding: 0 13px;
+  border: 1px solid var(--aic-paper-line); background: var(--aic-paper-1);
+  border-radius: 2px;
+  font: 500 14px/1.2 var(--aic-font-sans); color: var(--aic-fg-l-1);
+  outline: none; transition: box-shadow .14s ease;
+}
+.aic-input:focus, .aic-select:focus {
+  box-shadow: 0 0 0 2px var(--aic-paper-0), 0 0 0 4px var(--aic-gold);
+}
+.aic-label-mono {
+  display: block; margin-bottom: 6px;
+  font: var(--aic-mono-sm); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--aic-fg-l-3);
+}
+
+/* ── Hero grid background ── */
+.aic-hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(212,175,55,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,175,55,.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── Tables ── */
+.aic-tabular { font-variant-numeric: tabular-nums; }
+table.aic-t {
+  width: 100%; border-collapse: collapse; font: var(--aic-body-sm);
+}
+table.aic-t th, table.aic-t td { padding: 12px 20px; text-align: left; vertical-align: middle; }
+table.aic-t th {
+  font: var(--aic-mono-sm); letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 500;
+}
+table.aic-t--dark th { color: rgba(255,255,255,.50); background: rgba(255,255,255,.02); border-bottom: 1px solid rgba(255,255,255,.08); }
+table.aic-t--dark td { color: rgba(255,255,255,.94); border-bottom: 1px solid rgba(255,255,255,.06); }
+table.aic-t--dark tbody tr:last-child td { border-bottom: 0; }
+
+/* ── Cards ── */
+.aic-card {
+  border: 1px solid rgba(212,175,55,.18);
+  background: var(--aic-surface-0);
+  color: rgba(255,255,255,.94);
+}
+.aic-card--light {
+  border: 1px solid var(--aic-paper-line);
+  background: var(--aic-paper-1);
+  color: var(--aic-fg-l-1);
+}
+.aic-card-h {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.aic-card--light .aic-card-h { border-bottom: 1px solid var(--aic-paper-line-soft); }
+.aic-card-h-l { min-width: 0; flex: 1; }
+.aic-card-eyebrow { font: var(--aic-mono-sm); letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.50); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.aic-card--light .aic-card-eyebrow { color: var(--aic-fg-l-3); }
+.aic-card-title { font: 600 15px/1.2 var(--aic-font-serif); letter-spacing: -.01em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.aic-card--light .aic-card-title { color: var(--aic-fg-l-1); }
+.aic-card-body { padding: 20px; }
+
+/* ── Stat blocks ── */
+.aic-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid rgba(212,175,55,.18); background: var(--aic-surface-0); }
+.aic-stat { padding: 20px; border-right: 1px solid rgba(255,255,255,.06); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.aic-stat:last-child { border-right: 0; }
+.aic-stat-label { font: var(--aic-mono-sm); letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.50); }
+.aic-stat-value { font: 500 30px/1 var(--aic-font-serif); letter-spacing: -.02em; color: #fff; font-variant-numeric: tabular-nums; }
+.aic-stat-sub { font: var(--aic-body-sm); color: rgba(255,255,255,.50); }
+.aic-stat-sub--up { color: var(--aic-pass); }
+.aic-stat-sub--down { color: var(--aic-fail); }
+
+/* ── Progress bar ── */
+.aic-bar { height: 6px; background: rgba(255,255,255,.06); position: relative; overflow: hidden; }
+.aic-bar > i { position: absolute; inset: 0; background: var(--aic-gold); display: block; }
+
+/* ── Mobile breakpoint ── */
+@media (max-width: 768px) {
+  .aic-container, .aic-container-narrow { padding: 0 20px; }
+  .aic-hide-mobile { display: none !important; }
+  .aic-stats-row { grid-template-columns: 1fr 1fr; }
+  .aic-stat { border-right: 1px solid rgba(255,255,255,.06); }
+  .aic-stat:nth-child(2n) { border-right: 0; }
+  .aic-stat:nth-child(-n+2) { border-bottom: 1px solid rgba(255,255,255,.06); }
+  table.aic-t th, table.aic-t td { padding: 10px 14px; }
+  .aic-btn { min-height: 48px; }
+}
+.aic-show-mobile { display: none; }
+@media (max-width: 768px) { .aic-show-mobile { display: block; } }
