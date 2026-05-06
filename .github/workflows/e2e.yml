@@ -33,6 +33,19 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          # Stripe price ID guard test (stripe-price-ids-valid.spec.ts) reads
+          # STRIPE_SECRET_KEY to fetch each price from the Stripe REST API and
+          # assert it exists + is active + matches the expected $ + interval.
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          # All 6 NEXT_PUBLIC_STRIPE_*_PRICE_ID env vars are public — they
+          # ship to the browser bundle anyway. The spec consumes them via
+          # process.env so CI must inject them too.
+          NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID: ${{ secrets.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID }}
+          NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID: ${{ secrets.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID }}
+          NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID: ${{ secrets.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID }}
+          NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID: ${{ secrets.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID }}
+          NEXT_PUBLIC_STRIPE_REGULATED_MONTHLY_PRICE_ID: ${{ secrets.NEXT_PUBLIC_STRIPE_REGULATED_MONTHLY_PRICE_ID }}
+          NEXT_PUBLIC_STRIPE_REGULATED_YEARLY_PRICE_ID: ${{ secrets.NEXT_PUBLIC_STRIPE_REGULATED_YEARLY_PRICE_ID }}
           # Set RUN_GENERATOR_TESTS=1 in the nightly schedule to exercise the
           # DPIA/FRIA/Annex IV generators against the live Claude API.
           RUN_GENERATOR_TESTS: ${{ github.event_name == 'schedule' && '1' || '0' }}
