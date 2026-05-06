@@ -126,6 +126,31 @@
   padding: 28px 32px 60px;
   max-width: 100%;
   overflow-x: hidden;
+  /* Light surface so v1 sub-pages (ai-systems, risk, annex-iv, literacy,
+     dpia, fria, settings) render their shadcn cards against a paper bg
+     instead of the dark shell — Linear/Notion-style cards-on-light. The
+     /dashboard overview opts back into dark via .aic-dashboard-dark-shell
+     to preserve its Bloomberg-terminal Screen07 styling. */
+  background: var(--aic-paper-0);
+  color: var(--aic-fg-l-1);
+}
+
+/* Wrapper that overrides the light content area, used by /dashboard
+   overview to render dark cards on a dark surface (Screen07 from the
+   Claude Designs prototype). Negative margins counteract the parent
+   .aic-app-content padding so the dark shell goes edge-to-edge. */
+.aic-dashboard-dark-shell {
+  background: var(--aic-surface-1);
+  color: var(--aic-fg-d-1);
+  margin: -28px -32px 0;
+  padding: 28px 32px 60px;
+  min-height: calc(100vh - 49px);
+}
+@media (max-width: 768px) {
+  .aic-dashboard-dark-shell {
+    margin: -18px -16px 0;
+    padding: 18px 16px 90px;
+  }
 }
 
 /* ── Mobile bottom-tab bar (app screens) ── */

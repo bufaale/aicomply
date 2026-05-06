@@ -82,7 +82,7 @@ export default async function DashboardPage() {
     .slice(0, 5);
 
   return (
-    <>
+    <div className="aic-dashboard-dark-shell">
       <div
         style={{
           display: "flex",
@@ -403,6 +403,6 @@ export default async function DashboardPage() {
       <div style={{ marginTop: 18 }}>
         <CrossPromoBanner />
       </div>
-    </>
+    </div>
   );
 }
