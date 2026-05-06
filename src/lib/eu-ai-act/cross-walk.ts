@@ -174,9 +174,9 @@ export const ANNEX_IV_CROSS_WALK: CrossWalkEntry[] = [
   {
     field: "harmonised_standards_applied",
     label: "Harmonised standards applied",
-    coverage: { soc2: "medium", iso27001: "high" },
+    coverage: { soc2: "none", iso27001: "high" },
     references: { iso27001: ["A.5.36"] },
-    note: "ISO 27001 already requires you to track regulatory and standards compliance. Add the AI Act harmonised standards (prEN 18286, ISO 42001) to the same register.",
+    note: "ISO 27001 A.5.36 directly requires tracking compliance with policies, rules, and standards — extend your existing register with the AI Act harmonised standards (prEN 18286, ISO 42001). SOC2 has no equivalent control for tracking external technical-standards conformance.",
   },
   {
     field: "conformity_assessment_procedure",
