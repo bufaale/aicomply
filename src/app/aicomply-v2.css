@@ -138,17 +138,19 @@
 /* Wrapper that overrides the light content area, used by /dashboard
    overview to render dark cards on a dark surface (Screen07 from the
    Claude Designs prototype). Negative margins counteract the parent
-   .aic-app-content padding so the dark shell goes edge-to-edge. */
+   .aic-app-content padding so the dark shell goes edge-to-edge. The
+   bottom is also pulled out negatively so the dark fill reaches the
+   bottom of the viewport even when content is short. */
 .aic-dashboard-dark-shell {
   background: var(--aic-surface-1);
   color: var(--aic-fg-d-1);
-  margin: -28px -32px 0;
+  margin: -28px -32px -60px;
   padding: 28px 32px 60px;
-  min-height: calc(100vh - 49px);
+  min-height: 100vh;
 }
 @media (max-width: 768px) {
   .aic-dashboard-dark-shell {
-    margin: -18px -16px 0;
+    margin: -18px -16px -90px;
     padding: 18px 16px 90px;
   }
 }

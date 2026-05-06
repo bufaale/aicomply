@@ -571,7 +571,14 @@ export interface AppTopbarProps {
   userInitials?: string;
 }
 
-export function AppTopbar({ crumbs, userInitials = "JK" }: AppTopbarProps) {
+export function AppTopbar({ crumbs, userInitials = "AC" }: AppTopbarProps) {
+  // Production wiring of the topbar widgets:
+  // - Bell → /settings (where notification toggles live; full notifications
+  //   centre is a follow-up build, the link here at least lands somewhere
+  //   meaningful when a user clicks).
+  // - Avatar → /settings (profile + brand settings).
+  // - Search bar — hidden until the global search index ships. Showing a
+  //   non-functional ⌘K input was misleading users.
   return (
     <Fragment>
       <div className="aic-app-mobile-header">
@@ -580,8 +587,13 @@ export function AppTopbar({ crumbs, userInitials = "JK" }: AppTopbarProps) {
           <span className="brand-name">AIComply</span>
         </Link>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          <Icon name="search" size={18} />
-          <Icon name="bell" size={18} />
+          <Link
+            href="/settings"
+            aria-label="Notifications"
+            style={{ color: "rgba(255,255,255,.85)", display: "inline-flex" }}
+          >
+            <Icon name="bell" size={18} />
+          </Link>
         </div>
       </div>
       <div className="aic-app-topbar">
@@ -594,19 +606,16 @@ export function AppTopbar({ crumbs, userInitials = "JK" }: AppTopbarProps) {
           ))}
         </div>
         <div className="right">
-          <div className="search aic-hide-mobile">
-            <Icon name="search" size={14} />
-            <span style={{ flex: 1 }}>Search systems, evidence, controls…</span>
-            <span className="kbd">⌘K</span>
-          </div>
-          <button
-            type="button"
-            className="aic-btn aic-btn--ghost-dark-soft aic-btn--sm aic-hide-mobile"
+          <Link
+            href="/settings"
             aria-label="Notifications"
+            className="aic-btn aic-btn--ghost-dark-soft aic-btn--sm aic-hide-mobile"
           >
             <Icon name="bell" size={14} />
-          </button>
-          <div
+          </Link>
+          <Link
+            href="/settings"
+            aria-label="Account settings"
             style={{
               width: 30,
               height: 30,
@@ -618,10 +627,12 @@ export function AppTopbar({ crumbs, userInitials = "JK" }: AppTopbarProps) {
               justifyContent: "center",
               font: "600 11px var(--aic-font-mono)",
               color: "var(--aic-gold)",
+              textDecoration: "none",
+              transition: "background .14s ease",
             }}
           >
             {userInitials}
-          </div>
+          </Link>
         </div>
       </div>
     </Fragment>

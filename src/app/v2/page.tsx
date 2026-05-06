@@ -107,9 +107,16 @@ export default function V2LandingPage() {
                   <div
                     className="aic-tabular"
                     style={{
-                      font: "500 30px/1 var(--aic-font-serif)",
+                      // Inter (sans) for stat values — Fraunces serif's
+                      // variable opsz axis caused mixed-glyph baselines on
+                      // strings like "€35M" where the M rendered at a
+                      // different optical size than the digits. Inter is
+                      // monospaced-figure-friendly and visually rock-solid
+                      // in tabular contexts.
+                      font: "700 32px/1 var(--aic-font-sans)",
                       color: "#fff",
-                      letterSpacing: "-.02em",
+                      letterSpacing: "-.025em",
+                      fontFeatureSettings: '"tnum" 1, "lnum" 1',
                     }}
                   >
                     {n}
@@ -273,14 +280,21 @@ export default function V2LandingPage() {
           </div>
           <h2
             style={{
-              font: "500 40px/1.1 var(--aic-font-serif)",
+              font: "500 40px/1.15 var(--aic-font-serif)",
               letterSpacing: "-.025em",
               margin: "0 0 40px",
               maxWidth: 780,
+              // Lock the optical-size axis to match the visual size so
+              // italic glyphs render with the same metrics as the regular
+              // run. Without this, Fraunces' opsz axis can pick mixed
+              // optical sizes for italic vs regular text within the same
+              // heading, producing baseline mismatch when the italic span
+              // wraps to a new line.
+              fontVariationSettings: '"opsz" 36',
             }}
           >
             From &ldquo;we use ChatGPT&rdquo; to{" "}
-            <em
+            <span
               style={{
                 color: "var(--aic-gold-deep)",
                 fontStyle: "italic",
@@ -288,7 +302,7 @@ export default function V2LandingPage() {
               }}
             >
               Annex IV pack on the auditor&apos;s desk
-            </em>
+            </span>
             .
           </h2>
           <div
