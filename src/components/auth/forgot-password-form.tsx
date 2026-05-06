@@ -3,17 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
@@ -41,51 +30,121 @@ export function ForgotPasswordForm() {
     setLoading(false);
   };
 
+  const stamp = new Date().toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Reset your password</CardTitle>
-        <CardDescription>
-          Enter your email to receive a reset link
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {success ? (
-          <div className="rounded-md bg-primary/10 p-4 text-center text-sm text-primary">
-            Check your email for the reset link.
+    <>
+      <div
+        className="aic-eyebrow-line aic-eyebrow-line--light"
+        style={{ marginBottom: 10 }}
+      >
+        RESET PASSWORD
+      </div>
+      <h1
+        style={{
+          font: "500 32px/1.15 var(--aic-font-serif)",
+          letterSpacing: "-.02em",
+          margin: "0 0 8px",
+        }}
+      >
+        Forgot your password?
+      </h1>
+      <p
+        style={{
+          font: "14px/1.55 var(--aic-font-sans)",
+          color: "var(--aic-fg-l-3)",
+          margin: "0 0 26px",
+        }}
+      >
+        We&apos;ll send a reset link. Links expire in 30 minutes.
+      </p>
+
+      {success ? (
+        <div
+          role="status"
+          style={{
+            padding: 18,
+            border: "1px solid var(--aic-pass-deep)",
+            background: "rgba(20,184,166,.06)",
+            color: "var(--aic-pass-deep)",
+          }}
+        >
+          <div
+            className="aic-eyebrow-line"
+            style={{ color: "var(--aic-pass-deep)", marginBottom: 6 }}
+          >
+            ● SENT · {stamp}
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-                {error}
-              </div>
-            )}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+          <div
+            style={{
+              font: "14px/1.5 var(--aic-font-sans)",
+              color: "var(--aic-fg-l-2)",
+            }}
+          >
+            Check your inbox for the reset link.
+          </div>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          {error && (
+            <div
+              role="alert"
+              style={{
+                padding: "10px 12px",
+                marginBottom: 14,
+                border: "1px solid var(--aic-fail-deep)",
+                background: "rgba(248,113,113,0.08)",
+                color: "var(--aic-fail-deep)",
+                font: "13px/1.4 var(--aic-font-sans)",
+              }}
+            >
+              {error}
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Sending reset link..." : "Send reset link"}
-            </Button>
-          </form>
-        )}
-      </CardContent>
-      <CardFooter className="justify-center">
-        <p className="text-sm text-muted-foreground">
-          Remember your password?{" "}
-          <Link href="/login" className="font-medium text-primary hover:underline">
-            Sign in
-          </Link>
-        </p>
-      </CardFooter>
-    </Card>
+          )}
+          <div style={{ marginBottom: 18 }}>
+            <label htmlFor="email" className="aic-label-mono">
+              EMAIL
+            </label>
+            <input
+              id="email"
+              className="aic-input"
+              type="email"
+              placeholder="jamie@acme.health"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+            />
+          </div>
+          <button
+            type="submit"
+            className="aic-btn aic-btn--primary aic-btn--block aic-btn--lg"
+            disabled={loading}
+          >
+            {loading ? "Sending reset link…" : "Send reset link →"}
+          </button>
+        </form>
+      )}
+
+      <Link
+        href="/login"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          marginTop: 24,
+          color: "var(--aic-fg-l-2)",
+          textDecoration: "none",
+          font: "14px var(--aic-font-sans)",
+          fontWeight: 600,
+        }}
+      >
+        ← Back to sign in
+      </Link>
+    </>
   );
 }
