@@ -7,6 +7,7 @@ import {
   TierBadge,
   type RiskTier,
 } from "@/components/aicomply/atoms";
+import { getCrossWalkStats } from "@/lib/eu-ai-act/cross-walk";
 
 interface SystemRow {
   id: string;
@@ -207,19 +208,37 @@ export default async function DashboardPage() {
         <div className="aic-card">
           <div className="aic-card-h">
             <div className="aic-card-h-l">
-              <div className="aic-card-eyebrow">CROSS-WALK COVERAGE</div>
-              <div className="aic-card-title">Pre-satisfied controls</div>
+              <div className="aic-card-eyebrow">ANNEX IV CROSS-WALK · BASELINE</div>
+              <div className="aic-card-title">Pre-satisfied if you already have</div>
             </div>
           </div>
           <div className="aic-card-body" style={{ padding: 0 }}>
-            {(
-              [
-                ["EU AI Act", "27 / 38", "71%", "review", "#fbbf24"],
-                ["NIST AI RMF", "31 / 38", "81%", "pass", "#5eead4"],
-                ["ISO/IEC 42001", "47 / 52", "90%", "pass", "#5eead4"],
-                ["SOC 2 + AI", "59 / 64", "92%", "pass", "#5eead4"],
-              ] as const
-            ).map((r, i) => (
+            {(() => {
+              const stats = getCrossWalkStats();
+              return [
+                [
+                  "ISO/IEC 27001",
+                  `${stats.iso27001Count} / ${stats.total}`,
+                  `${stats.iso27001Pct}%`,
+                  stats.iso27001Pct >= 70 ? "pass" : "review",
+                  stats.iso27001Pct >= 70 ? "#5eead4" : "#fbbf24",
+                ],
+                [
+                  "SOC 2 Type II",
+                  `${stats.soc2Count} / ${stats.total}`,
+                  `${stats.soc2Pct}%`,
+                  stats.soc2Pct >= 70 ? "pass" : "review",
+                  stats.soc2Pct >= 70 ? "#5eead4" : "#fbbf24",
+                ],
+                [
+                  "Either framework",
+                  `${stats.eitherCount} / ${stats.total}`,
+                  `${stats.eitherPct}%`,
+                  stats.eitherPct >= 70 ? "pass" : "review",
+                  stats.eitherPct >= 70 ? "#5eead4" : "#fbbf24",
+                ],
+              ] as const;
+            })().map((r, i) => (
               <div
                 key={r[0]}
                 style={{
