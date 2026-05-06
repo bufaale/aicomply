@@ -47,9 +47,10 @@ export function DeleteAccountButton() {
         </h3>
         <p className="mt-1 text-xs text-red-800">
           Under GDPR Article 17 / CCPA, you can request permanent deletion of
-          your account and all associated data (scans, VPATs, sites, monitored
-          sites, tracker integrations). Active Stripe subscriptions are
-          cancelled first. This cannot be undone.
+          your account and all associated data (AI systems register, risk
+          classifications, Annex IV technical documentation, DPIA &amp; FRIA
+          assessments, Article 4 literacy records, audit trail). Active
+          Stripe subscriptions are cancelled first. This cannot be undone.
         </p>
       </div>
       <div>

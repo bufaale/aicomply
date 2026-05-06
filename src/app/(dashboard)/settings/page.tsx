@@ -205,9 +205,9 @@ export default function SettingsPage() {
       {/* Brand Customization Section */}
       <Card>
         <CardHeader>
-          <CardTitle>Brand Customization</CardTitle>
+          <CardTitle>Workspace Branding</CardTitle>
           <CardDescription>
-            Customize your contracts with your company branding
+            Applied to Annex IV technical documentation, DPIA &amp; FRIA exports, and your public trust page.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -295,6 +295,15 @@ export default function SettingsPage() {
                 </div>
                 <div className="bg-background p-4">
                   <div className="space-y-2">
+                    <div className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                      Annex IV · Section 1
+                    </div>
+                    <div
+                      className="text-sm font-semibold"
+                      style={{ color: primaryColor }}
+                    >
+                      Technical documentation
+                    </div>
                     <div
                       className="h-2 w-3/4 rounded"
                       style={{ backgroundColor: secondaryColor, opacity: 0.3 }}
@@ -307,7 +316,7 @@ export default function SettingsPage() {
                       className="mt-3 inline-block rounded px-3 py-1 text-xs font-medium text-white"
                       style={{ backgroundColor: primaryColor }}
                     >
-                      Sign Contract
+                      Download Annex IV PDF
                     </div>
                   </div>
                 </div>
