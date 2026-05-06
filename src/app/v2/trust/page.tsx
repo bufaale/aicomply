@@ -1,10 +1,5 @@
 import Link from "next/link";
-import {
-  MktHeader,
-  MktFooter,
-  PyramidBar,
-  TierBadge,
-} from "@/components/aicomply/atoms";
+import { PyramidBar, TierBadge } from "@/components/aicomply/atoms";
 
 /**
  * Demo render of the public trust page that AIComply customers expose at
@@ -16,8 +11,6 @@ import {
 export default function V2TrustPublicPage() {
   return (
     <>
-      <MktHeader activePath="/v2/trust" />
-
       <section
         style={{
           padding: "40px 56px",
@@ -457,7 +450,6 @@ export default function V2TrustPublicPage() {
         </div>
       </section>
 
-      <MktFooter />
     </>
   );
 }

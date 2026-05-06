@@ -2,11 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  MktHeader,
-  MktFooter,
-  Pyramid,
-} from "@/components/aicomply/atoms";
+import { Pyramid } from "@/components/aicomply/atoms";
 
 export default function V2LandingPage() {
   const [days, setDays] = useState(89);
@@ -19,8 +15,6 @@ export default function V2LandingPage() {
 
   return (
     <>
-      <MktHeader activePath="/v2" />
-
       <section
         className="aic-mkt-section"
         style={{
@@ -628,7 +622,6 @@ export default function V2LandingPage() {
         </div>
       </section>
 
-      <MktFooter />
     </>
   );
 }

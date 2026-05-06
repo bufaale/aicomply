@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { MktHeader, MktFooter } from "@/components/aicomply/atoms";
 
 const TIER_NAMES = ["Pro", "Business", "Regulated", "Enterprise"] as const;
 
@@ -146,8 +145,6 @@ const BILLING_FAQ: ReadonlyArray<readonly [string, string]> = [
 export default function V2PricingPage() {
   return (
     <>
-      <MktHeader activePath="/v2/pricing" />
-
       <section style={{ padding: "56px 56px 32px", background: "var(--aic-paper-0)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div
@@ -468,7 +465,6 @@ export default function V2PricingPage() {
         </div>
       </section>
 
-      <MktFooter />
     </>
   );
 }

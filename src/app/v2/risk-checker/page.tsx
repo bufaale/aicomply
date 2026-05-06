@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import {
-  MktHeader,
-  MktFooter,
   Pyramid,
   PyramidBar,
   TierBadge,
@@ -188,8 +186,6 @@ export default function V2RiskCheckerPage() {
 
   return (
     <>
-      <MktHeader activePath="/v2/risk-checker" />
-
       <section
         style={{
           padding: "40px 56px 24px",
@@ -553,7 +549,6 @@ export default function V2RiskCheckerPage() {
         </div>
       </section>
 
-      <MktFooter />
     </>
   );
 }

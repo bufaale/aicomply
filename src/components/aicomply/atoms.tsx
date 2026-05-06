@@ -247,9 +247,9 @@ export function Brand({ size = 24, href = "/v2", color, className }: BrandProps)
 // =============================================================================
 
 const MKT_LINKS: Array<{ href: string; label: string; matchPaths?: string[] }> = [
-  { href: "/v2", label: "Product", matchPaths: ["/v2", "/v2/"] },
-  { href: "/v2/risk-checker", label: "Risk checker" },
-  { href: "/v2/pricing", label: "Pricing" },
+  { href: "/", label: "Product", matchPaths: ["/", "/v2"] },
+  { href: "/free/risk-checker", label: "Risk checker", matchPaths: ["/free/risk-checker", "/v2/risk-checker"] },
+  { href: "/pricing", label: "Pricing", matchPaths: ["/pricing", "/v2/pricing"] },
   { href: "/v2/trust", label: "Trust" },
 ];
 
