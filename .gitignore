@@ -19,3 +19,9 @@ stitch-variants/
 CLAUDE.md
 !/CLAUDE.md
 .env.test.local
+
+# E2E + smoke artifacts
+verify-*.png
+test-results/
+playwright-report/
+coverage/
