@@ -123,14 +123,10 @@
   border: 1px solid rgba(255,255,255,.1); border-radius: 2px;
 }
 .aic-app-content {
+  flex: 1;
   padding: 28px 32px 60px;
   max-width: 100%;
   overflow-x: hidden;
-  /* Light surface so v1 sub-pages (ai-systems, risk, annex-iv, literacy,
-     dpia, fria, settings) render their shadcn cards against a paper bg
-     instead of the dark shell — Linear/Notion-style cards-on-light. The
-     /dashboard overview opts back into dark via .aic-dashboard-dark-shell
-     to preserve its Bloomberg-terminal Screen07 styling. */
   background: var(--aic-paper-0);
   color: var(--aic-fg-l-1);
 }
