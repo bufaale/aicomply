@@ -506,10 +506,10 @@ export default function V2RiskCheckerPage() {
                     href="/signup"
                     className="aic-btn aic-btn--primary aic-btn--lg aic-btn--block"
                   >
-                    Save verdict → 14-day trial
+                    Save verdict — start free
                   </Link>
                   <Link
-                    href="/v2/pricing"
+                    href="/pricing"
                     className="aic-btn aic-btn--ghost-dark aic-btn--block"
                   >
                     See pricing
