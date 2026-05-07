@@ -478,6 +478,8 @@ export interface AppSidebarProps {
   workspaceName?: string;
   workspacePlan?: string;
   workspaceInitials?: string;
+  /** Public trust page slug for this workspace, when trust_enabled=true. Null/undefined falls back to settings. */
+  trustSlug?: string | null;
 }
 
 export function AppSidebar({
@@ -485,6 +487,7 @@ export function AppSidebar({
   workspaceName = "Acme Health",
   workspacePlan = "Business · 47 systems",
   workspaceInitials = "AH",
+  trustSlug = null,
 }: AppSidebarProps) {
   const isActive = (href: string): boolean =>
     activePath === href || activePath.startsWith(`${href}/`);
@@ -517,11 +520,15 @@ export function AppSidebar({
         </span>
         Settings
       </Link>
-      <Link href="/v2/trust" className="nav-item">
+      <Link
+        href={trustSlug ? `/trust/${trustSlug}` : "/settings"}
+        className="nav-item"
+        title={trustSlug ? "View your public trust page" : "Configure trust page in settings"}
+      >
         <span className="icon">
           <Icon name="shield" size={14} />
         </span>
-        Public trust page
+        {trustSlug ? "Public trust page" : "Set up trust page"}
       </Link>
       <div className="ws">
         <div className="ws-avatar">{workspaceInitials}</div>

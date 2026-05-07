@@ -36,6 +36,7 @@ interface DashboardShellProps {
   workspacePlan: string;
   workspaceInitials: string;
   userInitials: string;
+  trustSlug: string | null;
   children: React.ReactNode;
 }
 
@@ -44,6 +45,7 @@ export function DashboardShell({
   workspacePlan,
   workspaceInitials,
   userInitials,
+  trustSlug,
   children,
 }: DashboardShellProps) {
   const pathname = usePathname() ?? "";
@@ -56,6 +58,7 @@ export function DashboardShell({
         workspaceName={workspaceName}
         workspacePlan={workspacePlan}
         workspaceInitials={workspaceInitials}
+        trustSlug={trustSlug}
       />
       <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
         <AppTopbar crumbs={[...crumbs]} userInitials={userInitials} />

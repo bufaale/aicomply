@@ -29,7 +29,9 @@ export default async function DashboardLayout({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name, company_name, subscription_plan, subscription_status")
+    .select(
+      "full_name, company_name, subscription_plan, subscription_status, trust_slug, trust_enabled",
+    )
     .eq("id", user.id)
     .single();
 
@@ -43,6 +45,7 @@ export default async function DashboardLayout({
   const workspacePlan = `${planLabel(profile?.subscription_plan, profile?.subscription_status)} · ${tracked} system${tracked === 1 ? "" : "s"}`;
   const workspaceInitials = initialsOf(profile?.company_name ?? profile?.full_name, "WS");
   const userInitials = initialsOf(profile?.full_name ?? user.email, user.email?.[0]?.toUpperCase() ?? "U");
+  const trustSlug = profile?.trust_enabled && profile?.trust_slug ? profile.trust_slug : null;
 
   return (
     <DashboardShell
@@ -50,6 +53,7 @@ export default async function DashboardLayout({
       workspacePlan={workspacePlan}
       workspaceInitials={workspaceInitials}
       userInitials={userInitials}
+      trustSlug={trustSlug}
     >
       {children}
     </DashboardShell>
