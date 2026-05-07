@@ -208,8 +208,10 @@ test.describe("Journey 2 — Risk classifier results render per tier", () => {
     await page.goto(`/dashboard/ai-systems/${systemId}`);
     await page.waitForLoadState("networkidle");
 
-    // Obligations card shows either obligations or the reclassify prompt
-    await expect(page.locator("text=Obligations")).toBeVisible();
+    // Obligations card shows either obligations or the reclassify prompt.
+    // Use .first() because the card title and the empty-state hint both contain
+    // the word "Obligations".
+    await expect(page.getByText(/Obligations/i).first()).toBeVisible();
   });
 });
 
