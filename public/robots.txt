@@ -1,0 +1,28 @@
+# AIComply robots.txt
+# Disallow protected/auth routes from being indexed.
+# /trust/[slug] is intentionally allowed because that's the public trust page customers want to share.
+
+User-agent: *
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /admin
+Disallow: /api
+Disallow: /auth
+Allow: /
+Allow: /trust/
+
+# AI scrapers — opt out of training, opt in to indexing
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
