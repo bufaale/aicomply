@@ -250,7 +250,7 @@ const MKT_LINKS: Array<{ href: string; label: string; matchPaths?: string[] }> =
   { href: "/", label: "Product", matchPaths: ["/", "/v2"] },
   { href: "/free/risk-checker", label: "Risk checker", matchPaths: ["/free/risk-checker", "/v2/risk-checker"] },
   { href: "/pricing", label: "Pricing", matchPaths: ["/pricing", "/v2/pricing"] },
-  { href: "/v2/trust", label: "Trust" },
+  { href: "/v2/trust", label: "Trust", matchPaths: ["/v2/trust"] },
 ];
 
 export interface MktHeaderProps {
@@ -405,9 +405,9 @@ export function MktFooter() {
           <FooterCol
             title="Product"
             links={[
-              { label: "Risk checker", href: "/v2/risk-checker" },
+              { label: "Risk checker", href: "/free/risk-checker" },
               { label: "AI inventory", href: "/dashboard/ai-systems" },
-              { label: "Pricing", href: "/v2/pricing" },
+              { label: "Pricing", href: "/pricing" },
               { label: "Trust", href: "/v2/trust" },
             ]}
           />
