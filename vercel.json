@@ -5,16 +5,19 @@
     "src/app/api/stripe/webhook/route.ts": {
       "maxDuration": 30
     },
-    "src/app/api/contracts/generate/route.ts": {
+    "src/app/api/annex-iv/*/pdf/route.ts": {
+      "maxDuration": 30
+    },
+    "src/app/api/ai-systems/*/classify/route.ts": {
       "maxDuration": 60
     },
-    "src/app/api/contracts/regenerate-clause/route.ts": {
-      "maxDuration": 30
+    "src/app/api/annex-iv/route.ts": {
+      "maxDuration": 60
     },
-    "src/app/api/contracts/*/pdf/route.ts": {
-      "maxDuration": 30
+    "src/app/api/dpia/route.ts": {
+      "maxDuration": 60
     },
-    "src/app/api/ai/analyze-contract/route.ts": {
+    "src/app/api/fria/route.ts": {
       "maxDuration": 60
     }
   }
