@@ -46,7 +46,7 @@ export const pricingPlans: PricingPlan[] = [
     id: "pro",
     name: "Pro",
     description: "For SMBs with a handful of AI tools",
-    price: { monthly: 79, yearly: 790 },
+    price: { monthly: 49, yearly: 490 },
     stripePriceId: {
       monthly: (process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID || "").trim(),
       yearly: (process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID || "").trim(),
@@ -76,7 +76,7 @@ export const pricingPlans: PricingPlan[] = [
     id: "business",
     name: "Business",
     description: "For teams with high-risk systems under Article 6",
-    price: { monthly: 199, yearly: 1990 },
+    price: { monthly: 149, yearly: 1490 },
     stripePriceId: {
       monthly: (process.env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID || "").trim(),
       yearly: (process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID || "").trim(),
@@ -105,7 +105,7 @@ export const pricingPlans: PricingPlan[] = [
     id: "regulated",
     name: "Regulated",
     description: "Public bodies, credit scoring, insurance pricing — full deployer pack",
-    price: { monthly: 399, yearly: 3990 },
+    price: { monthly: 299, yearly: 2990 },
     stripePriceId: {
       monthly: (process.env.NEXT_PUBLIC_STRIPE_REGULATED_MONTHLY_PRICE_ID || "").trim(),
       yearly: (process.env.NEXT_PUBLIC_STRIPE_REGULATED_YEARLY_PRICE_ID || "").trim(),
