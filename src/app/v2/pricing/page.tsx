@@ -68,7 +68,7 @@ const TIERS: readonly TierCard[] = [
       "30-day audit log",
       "Email support",
     ],
-    cta: "Start 14-day trial",
+    cta: "Start free — upgrade anytime",
     ctaHref: "/signup",
     featured: false,
   },
@@ -84,7 +84,7 @@ const TIERS: readonly TierCard[] = [
       "Auditor URL · public trust page",
       "Slack alerts",
     ],
-    cta: "Start 14-day trial",
+    cta: "Start free — upgrade anytime",
     ctaHref: "/signup",
     featured: true,
   },
@@ -100,7 +100,7 @@ const TIERS: readonly TierCard[] = [
       "HIPAA BAA · 7-yr log",
       "Priority support",
     ],
-    cta: "Start 14-day trial",
+    cta: "Start free — upgrade anytime",
     ctaHref: "/signup",
     featured: false,
   },
@@ -170,8 +170,8 @@ export default function V2PricingPage() {
               maxWidth: 560,
             }}
           >
-            14-day trial on every tier. Annual prepaid saves 17%. No per-seat tax on Article 4
-            literacy.
+            Start free, upgrade anytime — Stripe charges immediately on the paid tiers.
+            Annual prepaid saves 17%. No per-seat tax on Article 4 literacy.
           </p>
         </div>
       </section>

@@ -195,7 +195,7 @@ export default function Aug2Runway() {
         classification, literacy records, transparency obligations. Upgrade
         to Pro ($49/month) for 20 systems and FRIA / DPIA generators. Upgrade
         to Business ($149/month) for the trust page, evidence vault, and API.
-        Regulated ($299/month) ships the Annex IV documentation pack for
+        Regulated ($399/month) ships the Annex IV documentation pack for
         providers.
       </p>
       <p>

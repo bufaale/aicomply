@@ -105,7 +105,7 @@ export const pricingPlans: PricingPlan[] = [
     id: "regulated",
     name: "Regulated",
     description: "Public bodies, credit scoring, insurance pricing — full deployer pack",
-    price: { monthly: 299, yearly: 2990 },
+    price: { monthly: 399, yearly: 3990 },
     stripePriceId: {
       monthly: (process.env.NEXT_PUBLIC_STRIPE_REGULATED_MONTHLY_PRICE_ID || "").trim(),
       yearly: (process.env.NEXT_PUBLIC_STRIPE_REGULATED_YEARLY_PRICE_ID || "").trim(),

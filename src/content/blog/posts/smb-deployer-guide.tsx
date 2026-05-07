@@ -177,7 +177,7 @@ export default function SmbDeployerGuide() {
           path. Good if you are aiming for formal certification.
         </li>
         <li>
-          <strong>AIComply:</strong> $49-$299/month. SMB-first ergonomics.
+          <strong>AIComply:</strong> $49-$399/month. SMB-first ergonomics.
           FRIA, DPIA, Annex IV pack, GPAI tracking, public trust page.
         </li>
       </ul>
