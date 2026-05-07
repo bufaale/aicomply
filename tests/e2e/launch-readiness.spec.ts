@@ -96,8 +96,8 @@ test.describe("Journey 1 — Add an AI System (free tier)", () => {
 
     await page.getByRole("button", { name: /save.*classify/i }).click();
 
-    // Should navigate to the detail page after save+classify
-    await page.waitForURL(/\/dashboard\/ai-systems\/.+/, { timeout: 90_000 });
+    // Should navigate to the detail page after save+classify (URL gets a UUID; the /new page must navigate AWAY)
+    await page.waitForURL(/\/dashboard\/ai-systems\/[a-f0-9-]{36}/, { timeout: 90_000 });
 
     const url = page.url();
     const match = url.match(/ai-systems\/([a-f0-9-]+)/);
@@ -264,35 +264,24 @@ test.describe("Journey 3 — Annex IV is gated to Regulated tier", () => {
     await expect(page.getByRole("button", { name: /generate annex iv/i })).toBeVisible();
   });
 
-  test("J3c — /api/annex-iv/[id]/pdf returns PDF content-type for Regulated user", async ({
+  test("J3c — /api/annex-iv/[id]/pdf does not crash for Regulated user", async ({
     page,
   }) => {
-    // We skip PDF generation in prod to avoid AI spend; instead verify route responds
-    // with 404 (no document) rather than 500 (crash).
+    // We skip PDF generation in prod to avoid AI spend; verify route responds
+    // with a non-500 status when authenticated. Manually reconstructing Supabase
+    // SSR cookies is fragile across SDK versions, so log in via the UI and use
+    // the page's request context (auto-sends the session cookies the browser holds).
     const regulatedUser = await createTestUser("j3-regulated-pdf");
     await setUserPlan(regulatedUser.id, "regulated");
 
     try {
-      const loginRes = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-        method: "POST",
-        headers: {
-          apikey: process.env.SUPABASE_ANON_KEY!,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: regulatedUser.email, password: TEST_PASSWORD }),
-      });
-      const tokens = await loginRes.json() as { access_token: string };
-
-      const baseURL = process.env.TEST_BASE_URL || "https://aicomply.piposlab.com";
+      await loginViaUI(page, regulatedUser.email);
       const fakeId = "00000000-0000-0000-0000-000000000001";
-      const res = await fetch(`${baseURL}/api/annex-iv/${fakeId}/pdf`, {
-        headers: {
-          Cookie: `sb-rshqimfeuegioegfokmd-auth-token=${JSON.stringify([tokens.access_token, null, null, null, null])}`,
-        },
-      });
-      // 404 is expected (no document), 401 = auth broke, 500 = crash
-      expect(res.status, `PDF route returned ${res.status} — expected 404 for unknown doc`).not.toBe(500);
-      expect(res.status).not.toBe(401);
+      const res = await page.request.get(`/api/annex-iv/${fakeId}/pdf`);
+      // 404 is expected (no document). Any status that is not 5xx and not 401 is acceptable —
+      // 401 would mean auth broke, 5xx would mean the route crashed.
+      expect(res.status(), `PDF route returned ${res.status()} — auth or crash`).toBeLessThan(500);
+      expect(res.status(), "PDF route returned 401 — auth broke for Regulated user").not.toBe(401);
     } finally {
       await deleteTestUser(regulatedUser.id);
     }
