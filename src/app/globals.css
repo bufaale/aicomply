@@ -3,6 +3,11 @@
 @import "shadcn/tailwind.css";
 @plugin "@tailwindcss/typography";
 
+/* Prevent horizontal scroll on mobile from wide tables, sticky panels,
+   and dashboard chrome that overflow viewport at 390px. Same pattern
+   as AccessiScan + CallSpark mobile fix on 2026-05-07 launch eve. */
+html, body { overflow-x: clip; }
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
