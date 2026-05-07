@@ -3,12 +3,12 @@ import Link from "next/link";
 import { ShieldCheck, CheckCircle2, ArrowRight, AlertTriangle, FileText, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Free DPIA Generator (GDPR Article 35) | AIComply",
+  title: "DPIA Generator (GDPR Article 35) | AIComply",
   description:
-    "Generate a Data Protection Impact Assessment draft for any high-risk processing operation. Five Art. 35(7) sections + PDF export. Claude-powered. Free tier includes one DPIA.",
+    "Generate a Data Protection Impact Assessment draft for any high-risk processing operation. Five Art. 35(7) sections + PDF export. Claude-powered. DPIA generator included on Business ($149/mo) and Regulated tiers.",
   alternates: { canonical: "/dpia-generator" },
   openGraph: {
-    title: "Free DPIA Generator — GDPR Article 35",
+    title: "DPIA Generator — GDPR Article 35",
     description: "Draft a DPIA in 15 minutes. Required for any high-risk processing.",
     url: "/dpia-generator",
     type: "website",
@@ -44,19 +44,20 @@ export default function DpiaGeneratorPage() {
               href="/signup"
               className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-sm font-semibold text-[#0b0f23] transition-colors hover:bg-slate-100"
             >
-              Generate my first DPIA free
+              Start DPIA generator on Business
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              href="/#pricing"
+              href="/free/risk-checker"
               className="inline-flex h-12 items-center justify-center rounded-md border border-white/25 bg-transparent px-6 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white/5"
             >
-              See plans
+              Try free risk checker
             </Link>
           </div>
 
           <p className="mt-4 text-xs text-white/50">
-            Free tier · 1 DPIA · no credit card · PDF export unlocked on Pro.
+            DPIA generator is included on Business ($149/mo) and Regulated tiers. The 30-second
+            risk checker is free with no signup — start there to confirm DPIA applies to your processing.
           </p>
         </div>
       </section>
@@ -148,10 +149,10 @@ export default function DpiaGeneratorPage() {
 
           <div className="mt-16 rounded-md border border-violet-300 bg-white p-8 text-center">
             <h3 className="font-display text-2xl font-semibold">
-              First DPIA free. Unlimited on Business.
+              DPIA generator on Business · $149/mo, unlimited
             </h3>
             <p className="mt-2 text-sm text-slate-600">
-              No credit card. PDF export on Pro. Unlimited on Business.
+              Free 30-second risk checker confirms DPIA applies to your processing before you upgrade. Audit trail and PDF export included on Business.
             </p>
             <Link
               href="/signup"

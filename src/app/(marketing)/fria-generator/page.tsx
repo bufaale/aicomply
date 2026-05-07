@@ -3,12 +3,12 @@ import Link from "next/link";
 import { Scale, CheckCircle2, ArrowRight, ShieldAlert, FileText, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Free FRIA Generator (Article 27 EU AI Act) | AIComply",
+  title: "FRIA Generator (Article 27 EU AI Act) | AIComply",
   description:
-    "Generate a Fundamental Rights Impact Assessment draft for your high-risk AI system. Five Article 27(1) sections, auditor-ready PDF export. Claude-powered. Free tier includes one FRIA.",
+    "Generate a Fundamental Rights Impact Assessment draft for your high-risk AI system. Five Article 27(1) sections, auditor-ready PDF export. Claude-powered. FRIA generator included on Pro ($49/mo); free 30-second risk checker confirms you need one.",
   alternates: { canonical: "/fria-generator" },
   openGraph: {
-    title: "Free FRIA Generator — Article 27 EU AI Act",
+    title: "FRIA Generator — Article 27 EU AI Act",
     description:
       "Draft a Fundamental Rights Impact Assessment in 10 minutes. Required before Aug 2, 2026 for many deployers.",
     url: "/fria-generator",
@@ -44,20 +44,20 @@ export default function FriaGeneratorPage() {
               href="/signup"
               className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-sm font-semibold text-[#0b1f3a] transition-colors hover:bg-slate-100"
             >
-              Generate my first FRIA free
+              Start FRIA generator on Pro
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              href="/#pricing"
+              href="/free/risk-checker"
               className="inline-flex h-12 items-center justify-center rounded-md border border-white/25 bg-transparent px-6 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white/5"
             >
-              See plans
+              Try free risk checker
             </Link>
           </div>
 
           <p className="mt-4 text-xs text-white/50">
-            Free tier · 1 FRIA included · No credit card required · PDF export
-            unlocked on Pro.
+            FRIA generator is included on Pro ($49/mo) and above. The 30-second risk
+            checker is free with no signup — start there to confirm you actually need a FRIA.
           </p>
         </div>
       </section>
@@ -157,10 +157,10 @@ export default function FriaGeneratorPage() {
 
           <div className="mt-16 rounded-md border border-sky-300 bg-white p-8 text-center">
             <h3 className="font-display text-2xl font-semibold">
-              One FRIA free. Unlimited on Pro.
+              FRIA generator on Pro · 3 per month, $49/mo
             </h3>
             <p className="mt-2 text-sm text-slate-600">
-              No credit card. Audit trail included. Export to PDF on Pro.
+              Free 30-second risk checker confirms you need a FRIA before you upgrade. Audit trail and PDF export included on Pro.
             </p>
             <Link
               href="/signup"
