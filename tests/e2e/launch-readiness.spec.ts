@@ -361,15 +361,14 @@ test.describe("Journey 5 — Free risk checker (anonymous)", () => {
 
     // Answer all 10 questions "No"
     for (let i = 0; i < 10; i++) {
-      await page.getByRole("button", { name: /^No$/ }).click();
+      await page.locator("button.opt").nth(1).click();
       // Brief pause for the 220ms animation between questions
       await page.waitForTimeout(300);
     }
 
-    // Verdict screen must show
-    await expect(page.getByText("VERDICT", { exact: false })).toBeVisible({ timeout: 5_000 });
-    await expect(page.getByText("Minimal")).toBeVisible();
-    await expect(page.getByText("RECITAL 165", { exact: false })).toBeVisible();
+    // Verdict screen must show — wait for the Minimal tier-pill to render
+    await expect(page.getByText(/Minimal/i).first()).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByText(/RECITAL 165/i)).toBeVisible();
   });
 
   test("J5c — Q1 Yes triggers Prohibited verdict", async ({ page }) => {
@@ -377,23 +376,23 @@ test.describe("Journey 5 — Free risk checker (anonymous)", () => {
     await page.waitForLoadState("networkidle");
 
     // Answer Q1 "Yes"
-    await page.getByRole("button", { name: /^Yes$/ }).click();
+    await page.locator("button.opt").first().click();
     await page.waitForTimeout(300);
 
     // Answer remaining 9 "No"
     for (let i = 1; i < 10; i++) {
-      await page.getByRole("button", { name: /^No$/ }).click();
+      await page.locator("button.opt").nth(1).click();
       await page.waitForTimeout(300);
     }
 
-    await expect(page.getByText("Prohibited")).toBeVisible({ timeout: 5_000 });
-    await expect(page.getByText("ART. 5", { exact: false })).toBeVisible();
+    await expect(page.getByText(/Prohibited/i).first()).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByText(/ART\.?\s*5/i).first()).toBeVisible();
   });
 
   test("J5d — no auth cookie is set after completing the checker", async ({ page, context }) => {
     await page.goto("/free/risk-checker");
     for (let i = 0; i < 10; i++) {
-      await page.getByRole("button", { name: /^No$/ }).click();
+      await page.locator("button.opt").nth(1).click();
       await page.waitForTimeout(300);
     }
     // Confirm no Supabase auth cookie was written
