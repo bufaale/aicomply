@@ -74,13 +74,13 @@ export default function V2LandingPage() {
             </p>
             <div style={{ display: "flex", gap: 12, marginTop: 30, flexWrap: "wrap" }}>
               <Link
-                href="/v2/risk-checker"
+                href="/free/risk-checker"
                 className="aic-btn aic-btn--primary aic-btn--lg"
               >
                 Run the 10-question check — free
               </Link>
               <Link
-                href="/v2/pricing"
+                href="/pricing"
                 className="aic-btn aic-btn--ghost-dark aic-btn--lg"
               >
                 See pricing
@@ -194,7 +194,7 @@ export default function V2LandingPage() {
             >
               <span>REGULATION (EU) 2024/1689</span>
               <Link
-                href="/v2/risk-checker"
+                href="/free/risk-checker"
                 style={{ color: "var(--aic-gold)", textDecoration: "none" }}
               >
                 Classify your system →
@@ -427,9 +427,9 @@ export default function V2LandingPage() {
           >
             {(
               [
-                ["Pro", "$49", "starter · 5 systems", "Pick", false],
-                ["Business", "$149", "up to 50 · cross-walk", "Most picked", true],
-                ["Regulated", "$399", "unlimited · DPIA + FRIA", "Pick", false],
+                ["Pro", "$49", "up to 20 systems · FRIA", "Pick", false],
+                ["Business", "$149", "unlimited · DPIA + FRIA", "Most picked", true],
+                ["Regulated", "$399", "unlimited · Annex IV pack", "Pick", false],
                 ["Enterprise", "Contact", "SSO · BYO bucket", "Sales", false],
               ] as const
             ).map(([t, p, s, cta, featured], i) => (
@@ -496,7 +496,7 @@ export default function V2LandingPage() {
                   {s}
                 </div>
                 <Link
-                  href="/v2/pricing"
+                  href="/pricing"
                   className={
                     featured
                       ? "aic-btn aic-btn--primary aic-btn--block"
