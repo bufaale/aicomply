@@ -11,7 +11,7 @@ interface MatrixRow {
 
 const MATRIX: MatrixRow[] = [
   { feature: "AI systems & inventory" },
-  { feature: "Tracked AI systems", values: ["5", "50", "Unlimited", "Unlimited"] },
+  { feature: "Tracked AI systems", values: ["20", "Unlimited", "Unlimited", "Unlimited"] },
   { feature: "Auto-discovery (Slack/Drive)", values: ["✓", "✓", "✓", "✓"] },
   { feature: "10-question risk classifier", values: ["✓", "✓", "✓", "✓"] },
   { feature: "Classification & risk" },
@@ -21,8 +21,8 @@ const MATRIX: MatrixRow[] = [
   { feature: "Cross-walk (NIST · ISO · SOC 2)", values: ["—", "✓", "✓", "✓"] },
   { feature: "Documentation" },
   { feature: "Annex IV technical pack", values: ["—", "Draft", "Auto-gen", "Auto-gen"] },
-  { feature: "DPIA generator", values: ["—", "—", "✓", "✓"] },
-  { feature: "FRIA generator (Art. 27)", values: ["—", "—", "✓", "✓"] },
+  { feature: "DPIA generator", values: ["—", "✓", "✓", "✓"] },
+  { feature: "FRIA generator (Art. 27)", values: ["3/mo", "Unlimited", "Unlimited", "Unlimited"] },
   { feature: "Post-market monitoring plan", values: ["—", "—", "✓", "✓"] },
   { feature: "Article 4 literacy" },
   {
@@ -61,11 +61,11 @@ const TIERS: readonly TierCard[] = [
     p: "$49",
     s: "For teams just starting AI Act prep",
     bullets: [
-      "5 AI systems",
+      "20 AI systems",
+      "FRIA generator (3/month)",
       "10-question classifier",
-      "Up to 25 employees",
-      "Templates only",
       "30-day audit log",
+      "PDF export",
       "Email support",
     ],
     cta: "Start free — upgrade anytime",
@@ -77,9 +77,9 @@ const TIERS: readonly TierCard[] = [
     p: "$149",
     s: "For growing SMBs with 5–50 systems",
     bullets: [
-      "50 AI systems",
-      "Annex III mapping",
-      "Cross-walk to NIST + ISO",
+      "Unlimited AI systems",
+      "DPIA + FRIA generator (unlimited)",
+      "Annex III + NIST/ISO cross-walk",
       "1-year audit log",
       "Auditor URL · public trust page",
       "Slack alerts",
