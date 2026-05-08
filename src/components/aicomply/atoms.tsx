@@ -425,8 +425,8 @@ export function MktFooter() {
             links={[
               { label: "Terms", href: "/terms" },
               { label: "Privacy", href: "/privacy" },
+              { label: "Refund Policy", href: "/refund" },
               { label: "DPA", href: null },
-              { label: "SOC 2", href: null },
             ]}
           />
         </div>
