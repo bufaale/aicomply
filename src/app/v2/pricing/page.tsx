@@ -133,8 +133,8 @@ const BILLING_FAQ: ReadonlyArray<readonly [string, string]> = [
     "No. Article 4 literacy modules are unlimited employees on every paid tier.",
   ],
   [
-    "What's the trial?",
-    "14 days, no credit card. Includes Annex III mapping and one Annex IV draft.",
+    "Can I try AIComply before paying?",
+    "Yes. The Free tier (no card) lets you map 1 AI system, run the risk classifier, and read your obligations checklist. Upgrade to Pro ($49/mo) when you need to track more systems or generate FRIA documentation.",
   ],
   [
     "Can I bring my own auditor?",
