@@ -128,7 +128,7 @@ export function SignupForm() {
         className="aic-eyebrow-line aic-eyebrow-line--light"
         style={{ marginBottom: 10 }}
       >
-        CREATE WORKSPACE · 14-DAY TRIAL
+        CREATE WORKSPACE · FREE TIER INCLUDED
       </div>
       <h1
         style={{
