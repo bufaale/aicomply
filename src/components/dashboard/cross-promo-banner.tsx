@@ -1,16 +1,17 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Receipt, ArrowUpRight } from "lucide-react";
+import { Phone, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { PIPO_LABS_URLS } from "@/config/cross-promo";
 
 const promos = [
   {
-    icon: Receipt,
-    title: "Get Paid Faster",
-    description: "Contracts signed? Invoice clients and track payments with CobroExpress.",
-    url: "https://app-08-cobro-express.vercel.app",
-    cta: "Try CobroExpress",
+    icon: Phone,
+    title: "Missed calls killing leads?",
+    description: "CallSpark answers in your customer's language, books appointments, and warm-transfers to humans.",
+    url: PIPO_LABS_URLS.callspark,
+    cta: "Try CallSpark",
   },
 ];
 
