@@ -62,11 +62,11 @@ export default async function BlogPostPage({
 
         <div className="mt-14 rounded-md border border-violet-300 bg-violet-50 p-6">
           <p className="font-display text-lg font-semibold">
-            Free AI system classification + FRIA in 15 minutes
+            Free AI system classification + risk checker
           </p>
           <p className="mt-2 text-sm text-slate-700">
-            No credit card. From $79/month when you need 20 systems, unlimited
-            FRIAs and DPIAs, and the public trust page.
+            No credit card. Pro from $49/month when you need 20 systems, FRIA
+            generator, and the public trust page. Business at $149/mo for DPIA.
           </p>
           <Link
             href="/signup"

@@ -49,7 +49,7 @@ const features = [
     icon: Scale,
     title: "Priced for SMBs",
     description:
-      "Vanta, OneTrust and PwC start at €50,000/year. AIComply starts at $79/mo and scales to 100-person teams. Same legal outcome, different business model.",
+      "Vanta, OneTrust and PwC start at €50,000/year. AIComply has a Free tier and Pro starts at $49/mo, scaling to 100-person teams. Same legal outcome, different business model.",
   },
 ];
 
