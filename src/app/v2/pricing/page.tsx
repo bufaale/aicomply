@@ -176,8 +176,38 @@ export default function V2PricingPage() {
         </div>
       </section>
 
-      <section style={{ padding: "24px 56px 64px", background: "var(--aic-paper-0)" }}>
+      <section style={{ padding: "24px 56px 16px", background: "var(--aic-paper-0)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div
+            style={{
+              padding: "16px 22px",
+              border: "1px solid var(--aic-paper-line)",
+              borderBottom: "0",
+              background: "var(--aic-paper-1)",
+              fontSize: 14,
+              color: "var(--aic-fg-l-2)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 12,
+            }}
+          >
+            <span>
+              <strong style={{ color: "var(--aic-fg-l-1)" }}>Free tier</strong> · 1 AI system tracked, 10-question risk classifier, Article 4 literacy register (read-only), no credit card required. Upgrade when you need more.
+            </span>
+            <Link
+              href="/signup"
+              style={{
+                color: "var(--aic-fg-l-1)",
+                fontWeight: 600,
+                textDecoration: "underline",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Start free →
+            </Link>
+          </div>
           <div
             style={{
               display: "grid",
