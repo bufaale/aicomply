@@ -21,8 +21,11 @@ test.describe("Authentication", () => {
   }) => {
     await loginViaUI(page, testUser.email);
     await expect(page).toHaveURL(/\/dashboard/);
+    // Post-Claude-Designs port (May 2026): the dashboard h1 is a personalized
+    // greeting "Good {morning|afternoon|evening}, {name}." rather than the
+    // word "Dashboard". Match the greeting pattern instead.
     await expect(
-      page.getByRole("heading", { name: "Dashboard" }),
+      page.getByRole("heading", { name: /Good (morning|afternoon|evening)/ }),
     ).toBeVisible();
   });
 
@@ -58,7 +61,11 @@ test.describe("Authentication", () => {
 
   test("forgot password link navigates correctly", async ({ page }) => {
     await page.goto("/login");
-    await page.getByRole("link", { name: /forgot password/i }).click();
+    // v2 login form (Claude Designs port) abbreviates the link to "Forgot?"
+    // rather than "Forgot password". Accept either.
+    await page
+      .getByRole("link", { name: /forgot(\?| password)?/i })
+      .click();
     await expect(page).toHaveURL(/\/forgot-password/);
   });
 });

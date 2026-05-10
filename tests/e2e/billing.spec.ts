@@ -23,10 +23,12 @@ test.describe("Billing", () => {
     await expect(page).toHaveURL(/\/settings\/billing/);
 
     await expect(page.getByText(/free/i).first()).toBeVisible();
-    await expect(
-      page.getByText(/contracts this month/i),
-    ).toBeVisible();
-    await expect(page.getByText(/total clients/i)).toBeVisible();
+    // AIComply billing page (May 2026 v2 design) shows "AI Systems Tracked"
+    // as the usage card. The previous "contracts this month" / "total clients"
+    // labels were CallSpark copy that got mistakenly carried into this spec
+    // during the cross-app scaffold.
+    await expect(page.getByText(/AI Systems Tracked/i)).toBeVisible();
+    await expect(page.getByText(/Current Plan/i)).toBeVisible();
   });
 
   test("free user sees upgrade buttons", async ({ page }) => {
