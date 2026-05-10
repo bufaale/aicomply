@@ -69,6 +69,7 @@ export type IconName =
   | "book"
   | "list"
   | "grid"
+  | "card"
   | "google";
 
 export interface IconProps {
@@ -154,6 +155,12 @@ const ICON_PATHS: Record<IconName, ReactNode> = {
       <rect x={13} y={4} width={7} height={7} />
       <rect x={4} y={13} width={7} height={7} />
       <rect x={13} y={13} width={7} height={7} />
+    </>
+  ),
+  card: (
+    <>
+      <rect x={3} y={6} width={18} height={13} rx={1.5} />
+      <path d="M3 10 H21 M7 15 H10" />
     </>
   ),
   google: (
@@ -512,12 +519,21 @@ export function AppSidebar({
       <div className="group">Account</div>
       <Link
         href="/settings"
-        className={`nav-item${isActive("/settings") ? " active" : ""}`}
+        className={`nav-item${activePath === "/settings" || (activePath.startsWith("/settings/") && activePath !== "/settings/billing") ? " active" : ""}`}
       >
         <span className="icon">
           <Icon name="settings" size={14} />
         </span>
         Settings
+      </Link>
+      <Link
+        href="/settings/billing"
+        className={`nav-item${isActive("/settings/billing") ? " active" : ""}`}
+      >
+        <span className="icon">
+          <Icon name="card" size={14} />
+        </span>
+        Billing
       </Link>
       <Link
         href={trustSlug ? `/trust/${trustSlug}` : "/settings"}
