@@ -166,6 +166,13 @@ export default function V2RiskCheckerPage() {
   const [answers, setAnswers] = useState<Array<"yes" | "no" | null>>(
     Array(total).fill(null),
   );
+  const [systemLabel, setSystemLabel] = useState("");
+  const [email, setEmail] = useState("");
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
   const done = step >= total;
   const result = done ? classify(answers) : null;
   const details = result ? RESULT_DETAILS[result] : null;
@@ -182,7 +189,51 @@ export default function V2RiskCheckerPage() {
   const reset = () => {
     setStep(0);
     setAnswers(Array(total).fill(null));
+    setSystemLabel("");
+    setEmail("");
+    setShareUrl(null);
+    setSaveError(null);
+    setCopied(false);
   };
+
+  async function saveAndShare() {
+    if (!result) return;
+    setSaving(true);
+    setSaveError(null);
+    try {
+      const r = await fetch("/api/free/risk-checker/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          classification: result,
+          answers,
+          system_label: systemLabel || undefined,
+          email: email || undefined,
+        }),
+      });
+      const body = (await r.json()) as { ok?: boolean; share_url?: string; error?: string };
+      if (!r.ok || !body.ok || !body.share_url) {
+        setSaveError(body.error || "save_failed");
+      } else {
+        setShareUrl(body.share_url);
+      }
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : "save_failed");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function copyShare() {
+    if (!shareUrl) return;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard unavailable — no-op (button still shows URL inline)
+    }
+  }
 
   return (
     <>
@@ -459,6 +510,185 @@ export default function V2RiskCheckerPage() {
                     ))}
                   </div>
                 </div>
+              </div>
+
+              {/* Shareable permalink — viral wedge. Visible before signup CTA. */}
+              <div
+                data-testid="quiz-share-card"
+                style={{
+                  marginTop: 24,
+                  padding: "24px 28px",
+                  background: "var(--aic-paper-1)",
+                  border: "1px solid var(--aic-paper-line)",
+                }}
+              >
+                <div
+                  className="aic-eyebrow-line aic-eyebrow-line--light"
+                  style={{ marginBottom: 10 }}
+                >
+                  SHAREABLE VERDICT
+                </div>
+                {!shareUrl ? (
+                  <>
+                    <h3
+                      style={{
+                        font: "500 22px/1.2 var(--aic-font-serif)",
+                        letterSpacing: "-.015em",
+                        margin: "0 0 6px",
+                        color: "var(--aic-fg-l-1)",
+                      }}
+                    >
+                      Get a permalink for this verdict
+                    </h3>
+                    <p
+                      style={{
+                        margin: "0 0 16px",
+                        font: "14px/1.55 var(--aic-font-sans)",
+                        color: "var(--aic-fg-l-3)",
+                      }}
+                    >
+                      Drop the link in Slack / email / LinkedIn — recipients
+                      see the verdict + obligations without re-running the
+                      quiz. Email is optional (and only used to send your
+                      verdict + Annex IV starter pack).
+                    </p>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: 12,
+                        marginBottom: 12,
+                      }}
+                    >
+                      <label
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 4,
+                          font: "13px/1 var(--aic-font-sans)",
+                          color: "var(--aic-fg-l-3)",
+                        }}
+                      >
+                        System label (optional)
+                        <input
+                          data-testid="quiz-system-label"
+                          type="text"
+                          value={systemLabel}
+                          onChange={(e) => setSystemLabel(e.target.value.slice(0, 80))}
+                          maxLength={80}
+                          placeholder="e.g. ACME Corp resume screener"
+                          style={{
+                            border: "1px solid var(--aic-paper-line)",
+                            padding: "10px 12px",
+                            font: "14px var(--aic-font-sans)",
+                            background: "var(--aic-paper-0)",
+                            color: "var(--aic-fg-l-1)",
+                          }}
+                        />
+                      </label>
+                      <label
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 4,
+                          font: "13px/1 var(--aic-font-sans)",
+                          color: "var(--aic-fg-l-3)",
+                        }}
+                      >
+                        Email (optional)
+                        <input
+                          data-testid="quiz-email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value.slice(0, 254))}
+                          maxLength={254}
+                          placeholder="you@company.com"
+                          style={{
+                            border: "1px solid var(--aic-paper-line)",
+                            padding: "10px 12px",
+                            font: "14px var(--aic-font-sans)",
+                            background: "var(--aic-paper-0)",
+                            color: "var(--aic-fg-l-1)",
+                          }}
+                        />
+                      </label>
+                    </div>
+                    <button
+                      type="button"
+                      data-testid="quiz-save-share"
+                      onClick={saveAndShare}
+                      disabled={saving}
+                      className="aic-btn aic-btn--primary aic-btn--lg"
+                      style={{ opacity: saving ? 0.6 : 1 }}
+                    >
+                      {saving ? "Saving…" : "Create share link"}
+                    </button>
+                    {saveError ? (
+                      <div
+                        role="alert"
+                        style={{
+                          marginTop: 10,
+                          font: "13px var(--aic-font-sans)",
+                          color: "#b91c1c",
+                        }}
+                      >
+                        Couldn&apos;t save: {saveError}. Try again in a moment.
+                      </div>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    <div
+                      style={{
+                        font: "500 16px/1.4 var(--aic-font-serif)",
+                        color: "var(--aic-fg-l-1)",
+                        marginBottom: 10,
+                      }}
+                    >
+                      Permalink ready — share anywhere.
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 10,
+                        alignItems: "stretch",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <code
+                        data-testid="quiz-share-url"
+                        style={{
+                          flex: "1 1 320px",
+                          padding: "10px 14px",
+                          background: "var(--aic-paper-0)",
+                          border: "1px solid var(--aic-paper-line)",
+                          font: "13px var(--aic-mono)",
+                          color: "var(--aic-fg-l-2)",
+                          wordBreak: "break-all",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {shareUrl}
+                      </code>
+                      <button
+                        type="button"
+                        onClick={copyShare}
+                        className="aic-btn aic-btn--ghost-light"
+                      >
+                        {copied ? "Copied ✓" : "Copy link"}
+                      </button>
+                      <a
+                        href={shareUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="aic-btn aic-btn--ghost-light"
+                      >
+                        Open ↗
+                      </a>
+                    </div>
+                  </>
+                )}
               </div>
 
               <div
