@@ -6,6 +6,8 @@ const STATIC_ROUTES: Array<{ path: string; priority: number; changeFreq: "daily"
   { path: "/", priority: 1.0, changeFreq: "weekly" },
   { path: "/pricing", priority: 0.9, changeFreq: "weekly" },
   { path: "/free/risk-checker", priority: 0.9, changeFreq: "weekly" },
+  { path: "/risk-tiers", priority: 0.85, changeFreq: "weekly" },
+  { path: "/trust", priority: 0.8, changeFreq: "weekly" },
   { path: "/fria-generator", priority: 0.7, changeFreq: "monthly" },
   { path: "/dpia-generator", priority: 0.7, changeFreq: "monthly" },
   { path: "/blog", priority: 0.7, changeFreq: "weekly" },
