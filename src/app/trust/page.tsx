@@ -377,6 +377,80 @@ export default async function TrustCenterIndexPage() {
         </div>
       </section>
 
+      {/* Cross-portfolio: accessibility audit badge */}
+      <section
+        style={{
+          padding: "48px 56px",
+          background: "var(--aic-paper-0, #fafafa)",
+          borderTop: "1px solid var(--aic-paper-line, #e5e7eb)",
+        }}
+      >
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--aic-gold-deep, #a16207)",
+              marginBottom: 14,
+            }}
+          >
+            ACCESSIBILITY · WCAG 2.1 AA
+          </div>
+          <h2
+            style={{
+              fontFamily: "var(--aic-font-serif, serif)",
+              fontSize: 28,
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
+              margin: 0,
+              marginBottom: 14,
+            }}
+          >
+            We audit our own site with{" "}
+            <a
+              href="https://accessiscan.piposlab.com?utm_source=aicomply_trust&utm_medium=embed"
+              style={{
+                color: "var(--aic-gold-deep, #a16207)",
+                fontStyle: "italic",
+                fontWeight: 500,
+                textDecoration: "none",
+              }}
+            >
+              AccessiScan
+            </a>
+            .
+          </h2>
+          <p
+            style={{
+              fontSize: 15,
+              lineHeight: 1.6,
+              color: "var(--aic-fg-l-3, #475569)",
+              marginBottom: 18,
+              maxWidth: 700,
+            }}
+          >
+            Compliance starts with treating regulators&apos; words as
+            requirements, not branding. Live AccessiScan WCAG score for
+            this site:
+          </p>
+          <a
+            href="https://accessiscan.piposlab.com/free/wcag-scanner?utm_source=aicomply_trust&utm_medium=embed&utm_campaign=cross_promo"
+            target="_blank"
+            rel="noopener"
+            style={{ display: "inline-block", lineHeight: 0 }}
+          >
+            <img
+              src="https://accessiscan.piposlab.com/badge/aicomply.piposlab.com"
+              alt="AIComply WCAG accessibility score, audited by AccessiScan"
+              width={250}
+              height={60}
+            />
+          </a>
+        </div>
+      </section>
+
       {/* CTA */}
       <section
         style={{
