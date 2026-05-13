@@ -420,8 +420,8 @@ export function MktFooter() {
           <FooterCol
             title="Compliance"
             links={[
-              { label: "EU AI Act", href: null },
-              { label: "Annex IV", href: null },
+              { label: "EU AI Act risk tiers", href: "/risk-tiers" },
+              { label: "Trust center", href: "/trust" },
               { label: "Article 4 literacy", href: null },
               { label: "DPIA & FRIA", href: null },
             ]}
