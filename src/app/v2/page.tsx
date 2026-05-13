@@ -949,8 +949,8 @@ export default function V2LandingPage() {
             <div style={{ border: "1px solid var(--aic-paper-line)" }}>
               {[
                 [
-                  "Are you SOC 2 Type II?",
-                  "Yes — SOC 2 Type II since November 2025. Report under NDA. ISO 27001 since June 2024.",
+                  "What's your security posture?",
+                  "Least-privilege Postgres RLS on every customer row. TLS 1.2+ in transit, AES-256 at rest (Supabase). DPA on request to alex@piposlab.com. SOC 2 Type II is on the roadmap once we hit 5+ enterprise customers; live posture details at aicomply.piposlab.com/trust.",
                 ],
                 [
                   "What if my system is high-risk?",

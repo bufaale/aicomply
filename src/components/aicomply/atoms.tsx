@@ -577,7 +577,7 @@ export function MktFooter() {
         >
           <span>© 2026 Pipo&apos;s Lab LLC · AIComply&trade;</span>
           <span style={{ font: "var(--aic-mono-sm)", letterSpacing: ".1em" }}>
-            SOC 2 TYPE II · ISO 27001 · REGULATION (EU) 2024/1689
+            REGULATION (EU) 2024/1689 · THE EU AI ACT
           </span>
         </div>
       </div>
