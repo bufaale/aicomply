@@ -436,6 +436,132 @@ export function MktFooter() {
             ]}
           />
         </div>
+        {/* Cross-portfolio /free-tool bridge — visitors land on a working
+            sibling tool, not a homepage. Added 2026-05-13. */}
+        <section
+          aria-labelledby="aic-cross-promo"
+          style={{
+            marginTop: 32,
+            paddingTop: 18,
+            borderTop: "1px solid var(--aic-paper-line-soft)",
+          }}
+        >
+          <p
+            id="aic-cross-promo"
+            style={{
+              font: "var(--aic-mono-sm)",
+              letterSpacing: ".12em",
+              textTransform: "uppercase",
+              color: "var(--aic-fg-l-4)",
+              margin: 0,
+            }}
+          >
+            More free tools from Pipo Labs
+          </p>
+          <div
+            style={{
+              marginTop: 14,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: 12,
+            }}
+          >
+            <a
+              href="https://accessiscan.piposlab.com/free/wcag-scanner"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "12px 14px",
+                border: "1px solid var(--aic-paper-line)",
+                background: "var(--aic-paper-1)",
+                textDecoration: "none",
+                color: "inherit",
+                display: "block",
+              }}
+            >
+              <div style={{ fontSize: 13, fontWeight: 600, color: "var(--aic-fg-l-1)" }}>
+                AccessiScan
+              </div>
+              <div style={{ fontSize: 12, color: "var(--aic-fg-l-3)", marginTop: 2 }}>
+                Free WCAG 2.1 AA scanner — score any site in 5 seconds
+              </div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: "var(--aic-gold-deep, #b45309)",
+                  marginTop: 6,
+                  letterSpacing: ".05em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Free · no signup ↗
+              </div>
+            </a>
+            <a
+              href="https://callspark.piposlab.com/free/transcript-check"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "12px 14px",
+                border: "1px solid var(--aic-paper-line)",
+                background: "var(--aic-paper-1)",
+                textDecoration: "none",
+                color: "inherit",
+                display: "block",
+              }}
+            >
+              <div style={{ fontSize: 13, fontWeight: 600, color: "var(--aic-fg-l-1)" }}>
+                CallSpark
+              </div>
+              <div style={{ fontSize: 12, color: "var(--aic-fg-l-3)", marginTop: 2 }}>
+                Free call-transcript analyzer — sentiment + red flags
+              </div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: "var(--aic-gold-deep, #b45309)",
+                  marginTop: 6,
+                  letterSpacing: ".05em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Free · no signup ↗
+              </div>
+            </a>
+            <a
+              href="https://piposlab.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "12px 14px",
+                border: "1px solid var(--aic-paper-line)",
+                background: "var(--aic-paper-1)",
+                textDecoration: "none",
+                color: "inherit",
+                display: "block",
+              }}
+            >
+              <div style={{ fontSize: 13, fontWeight: 600, color: "var(--aic-fg-l-1)" }}>
+                Pipo Labs
+              </div>
+              <div style={{ fontSize: 12, color: "var(--aic-fg-l-3)", marginTop: 2 }}>
+                See all 16 tools — SaaS suite for operators
+              </div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: "var(--aic-gold-deep, #b45309)",
+                  marginTop: 6,
+                  letterSpacing: ".05em",
+                  textTransform: "uppercase",
+                }}
+              >
+                piposlab.com ↗
+              </div>
+            </a>
+          </div>
+        </section>
+
         <div
           style={{
             marginTop: 32,
