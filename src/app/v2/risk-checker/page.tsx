@@ -326,13 +326,16 @@ export default function V2RiskCheckerPage() {
           )}
 
           {!done && (
-            <div className="aic-q-card">
+            <div className="aic-q-card" data-testid="risk-checker-stepper" data-step={step}>
               <div className="aic-q-num">{RC_QUESTIONS[step]?.citation}</div>
-              <div className="aic-q-text">{RC_QUESTIONS[step]?.q}</div>
+              <div className="aic-q-text" data-testid="risk-question-text">
+                {RC_QUESTIONS[step]?.q}
+              </div>
               <div className="aic-q-options">
                 <button
                   type="button"
                   className="opt"
+                  data-testid="risk-answer-yes"
                   onClick={() => setAnswer("yes")}
                 >
                   <span>Yes</span>
@@ -341,6 +344,7 @@ export default function V2RiskCheckerPage() {
                 <button
                   type="button"
                   className="opt"
+                  data-testid="risk-answer-no"
                   onClick={() => setAnswer("no")}
                 >
                   <span>No</span>
@@ -379,7 +383,7 @@ export default function V2RiskCheckerPage() {
           )}
 
           {done && details && result && (
-            <div>
+            <div data-testid="risk-checker-verdict" data-verdict={result}>
               <div
                 style={{
                   display: "flex",
