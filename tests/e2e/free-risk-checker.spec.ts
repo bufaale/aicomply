@@ -13,9 +13,10 @@ import { classify, QUESTIONS } from "@/lib/free-checker/classifier";
 test.describe("/free/risk-checker — wizard", () => {
   test("renders heading + first question + no signup gate", async ({ page }) => {
     await page.goto("/free/risk-checker");
-    await expect(
-      page.getByRole("heading", { name: /Free EU AI Act Risk Checker/i }),
-    ).toBeVisible();
+    // H1 is "10 questions. One verdict." — the marketing punchline, not the
+    // SEO-friendly metadata title. Verify document.title still has the SEO copy.
+    await expect(page.getByRole("heading", { name: /10 questions/i, level: 1 })).toBeVisible();
+    await expect(page).toHaveTitle(/Free EU AI Act Risk Checker/i);
     await expect(page.locator('[data-testid="risk-checker-stepper"]')).toBeVisible();
     await expect(page.locator('[data-testid="risk-question-text"]')).toBeVisible();
     // Sanity: no "create account to see results" wall on the question card
@@ -24,13 +25,29 @@ test.describe("/free/risk-checker — wizard", () => {
     );
   });
 
+  // Walk the wizard. The stepper has setAnswer() with a 220ms setTimeout
+  // before incrementing `step`, so we wait for the data-step attribute to
+  // advance before clicking the next button (otherwise we race the state
+  // update and double-click the same step).
+  async function answerWizard(
+    page: import("@playwright/test").Page,
+    answers: Array<"yes" | "no">,
+  ) {
+    const stepper = page.locator('[data-testid="risk-checker-stepper"]');
+    for (let i = 0; i < answers.length; i++) {
+      await expect(stepper).toHaveAttribute("data-step", String(i), {
+        timeout: 10_000,
+      });
+      await page.locator(`[data-testid="risk-answer-${answers[i]}"]`).click();
+    }
+  }
+
   test("answer all 10 questions 'no' → minimal verdict appears", async ({ page }) => {
     await page.goto("/free/risk-checker");
-    for (let i = 0; i < QUESTIONS.length; i++) {
-      const noBtn = page.locator('[data-testid="risk-answer-no"]');
-      await noBtn.waitFor({ state: "visible", timeout: 10_000 });
-      await noBtn.click();
-    }
+    await answerWizard(
+      page,
+      QUESTIONS.map(() => "no" as const),
+    );
     const verdict = page.locator('[data-testid="risk-checker-verdict"]');
     await expect(verdict).toBeVisible({ timeout: 10_000 });
     await expect(verdict).toHaveAttribute("data-verdict", "minimal");
@@ -40,13 +57,8 @@ test.describe("/free/risk-checker — wizard", () => {
     page,
   }) => {
     await page.goto("/free/risk-checker");
-    // Q1 = yes (prohibited trigger), then 9× no
-    await page.locator('[data-testid="risk-answer-yes"]').click();
-    for (let i = 1; i < QUESTIONS.length; i++) {
-      const noBtn = page.locator('[data-testid="risk-answer-no"]');
-      await noBtn.waitFor({ state: "visible", timeout: 10_000 });
-      await noBtn.click();
-    }
+    const answers: Array<"yes" | "no"> = ["yes", ...QUESTIONS.slice(1).map(() => "no" as const)];
+    await answerWizard(page, answers);
     const verdict = page.locator('[data-testid="risk-checker-verdict"]');
     await expect(verdict).toBeVisible({ timeout: 10_000 });
     await expect(verdict).toHaveAttribute("data-verdict", "prohibited");
