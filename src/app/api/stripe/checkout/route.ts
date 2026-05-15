@@ -4,7 +4,19 @@ import { createClient } from "@/lib/supabase/server";
 import { pricingPlans } from "@/lib/stripe/plans";
 
 export async function POST(req: Request) {
-  const { priceId, mode = "subscription" } = await req.json();
+  const body = await req.json();
+  const { priceId, mode = "subscription" } = body;
+
+  // AUTH FIRST — check authentication before any price-ID validation.
+  // Doing price-ID validation before auth allows unauthenticated callers to
+  // enumerate whether a price ID is valid (400 vs 401 reveals internal data).
+  // Lesson from CallSpark BUG-08 / AIComply audit 2026-05-15.
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   // Validate mode
   if (mode !== "subscription" && mode !== "payment") {
@@ -18,13 +30,6 @@ export async function POST(req: Request) {
 
   if (!validPriceIds.includes(priceId)) {
     return NextResponse.json({ error: "Invalid price" }, { status: 400 });
-  }
-
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   // Get or create Stripe customer
