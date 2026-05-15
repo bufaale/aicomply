@@ -73,7 +73,11 @@ export default async function DashboardPage() {
   const target = new Date("2026-08-02").getTime();
   const days = Math.max(0, Math.ceil((target - Date.now()) / 86400000));
 
-  const greeting = user?.user_metadata?.full_name?.split(" ")[0] ?? "there";
+  const firstName =
+    user?.user_metadata?.full_name?.split(" ")[0] ||
+    user?.email?.split("@")[0] ||
+    "";
+  const greeting = firstName ? `, ${firstName}` : "";
 
   const recent = [...systems]
     .sort(
@@ -107,7 +111,7 @@ export default async function DashboardPage() {
               color: "#fff",
             }}
           >
-            Good morning, {greeting}.
+            Good morning{greeting}.
           </h1>
           <p
             style={{
