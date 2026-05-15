@@ -435,13 +435,13 @@ test.describe("Journey 6 — Stripe price ID liveness", () => {
     {
       label: "Regulated monthly",
       priceId: process.env.NEXT_PUBLIC_STRIPE_REGULATED_MONTHLY_PRICE_ID || "",
-      expectedCents: 29900,
+      expectedCents: 39900,  // $399/mo — fixed 2026-05-15 audit (was wrong 29900=$299)
       interval: "month",
     },
     {
       label: "Regulated yearly",
       priceId: process.env.NEXT_PUBLIC_STRIPE_REGULATED_YEARLY_PRICE_ID || "",
-      expectedCents: 299000,
+      expectedCents: 399000,  // $3990/yr — fixed 2026-05-15 audit (was wrong 299000=$2990)
       interval: "year",
     },
   ];
