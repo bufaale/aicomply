@@ -202,10 +202,13 @@ export function LoginForm() {
           color: "var(--aic-fg-l-4)",
         }}
       >
-        Protected by SOC 2 Type II controls.{" "}
-        <span style={{ font: "var(--aic-mono-sm)", letterSpacing: ".08em" }}>
-          REG. NO. AIC-2026
-        </span>
+        Data encrypted TLS 1.2+ in transit, AES-256 at rest.{" "}
+        <a
+          href="/trust"
+          style={{ color: "var(--aic-gold-deep)", textDecoration: "underline" }}
+        >
+          Security posture →
+        </a>
       </p>
     </>
   );
