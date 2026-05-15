@@ -1,0 +1,133 @@
+{
+  "app": "AIComply",
+  "domain": "https://aicomply.piposlab.com",
+  "audited_at": "2026-05-15T00:00:00Z",
+  "routes": {
+    "public": [
+      "/",
+      "/pricing",
+      "/free/risk-checker",
+      "/risk-tiers",
+      "/trust",
+      "/trust/[slug]",
+      "/quiz-result/[token]",
+      "/fria-generator",
+      "/dpia-generator",
+      "/blog",
+      "/blog/[slug]",
+      "/terms",
+      "/privacy",
+      "/refund",
+      "/sitemap.xml"
+    ],
+    "auth": [
+      "/login",
+      "/signup",
+      "/forgot-password",
+      "/auth/confirm"
+    ],
+    "protected": [
+      "/dashboard",
+      "/dashboard/ai-systems",
+      "/dashboard/ai-systems/new",
+      "/dashboard/ai-systems/[id]",
+      "/dashboard/annex-iv",
+      "/dashboard/annex-iv/new",
+      "/dashboard/annex-iv/[id]",
+      "/dashboard/discovery",
+      "/dashboard/dpia",
+      "/dashboard/dpia/new",
+      "/dashboard/dpia/[id]",
+      "/dashboard/fria",
+      "/dashboard/fria/new",
+      "/dashboard/fria/[id]",
+      "/dashboard/literacy",
+      "/dashboard/questionnaire",
+      "/dashboard/risk",
+      "/dashboard/trust",
+      "/settings",
+      "/settings/billing"
+    ],
+    "api": [
+      "/api/health",
+      "/api/ai-systems",
+      "/api/ai-systems/[id]",
+      "/api/ai-systems/[id]/classify",
+      "/api/ai-systems/[id]/gpai",
+      "/api/annex-iv",
+      "/api/annex-iv/[id]",
+      "/api/annex-iv/[id]/pdf",
+      "/api/dpia",
+      "/api/dpia/[id]",
+      "/api/dpia/[id]/pdf",
+      "/api/fria",
+      "/api/fria/[id]",
+      "/api/fria/[id]/pdf",
+      "/api/discovery",
+      "/api/discovery/import",
+      "/api/free/risk-checker",
+      "/api/free/risk-checker/save",
+      "/api/questionnaire/draft",
+      "/api/stripe/checkout",
+      "/api/stripe/portal",
+      "/api/stripe/webhook",
+      "/api/trust",
+      "/api/auth/signout",
+      "/api/account/delete",
+      "/api/cron/lead-followups"
+    ]
+  },
+  "stripe_tiers": [
+    { "name": "free", "price_id": null, "monthly_usd": 0 },
+    { "name": "pro", "price_id": "NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID", "monthly_usd": 49 },
+    { "name": "business", "price_id": "NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID", "monthly_usd": 149 },
+    { "name": "regulated", "price_id": "NEXT_PUBLIC_STRIPE_REGULATED_MONTHLY_PRICE_ID", "monthly_usd": 399 },
+    { "name": "enterprise", "price_id": null, "monthly_usd": 4999, "contact_sales": true }
+  ],
+  "supabase_tables": [
+    "profiles",
+    "ai_systems",
+    "ai_system_obligations",
+    "ai_literacy_records",
+    "annex_iv_documents",
+    "dpia_assessments",
+    "fria_assessments",
+    "subscriptions",
+    "stripe_events_processed",
+    "quiz_results"
+  ],
+  "interactive_components": [
+    { "route": "/login", "type": "form", "fields": ["email", "password"], "submit": "supabase.auth.signInWithPassword" },
+    { "route": "/login", "type": "oauth", "provider": "google" },
+    { "route": "/signup", "type": "form", "fields": ["full_name", "email", "password"], "submit": "supabase.auth.signUp" },
+    { "route": "/forgot-password", "type": "form", "fields": ["email"], "submit": "supabase.auth.resetPasswordForEmail" },
+    { "route": "/free/risk-checker", "type": "quiz", "fields": ["10 yes/no questions", "email (optional)"], "submit": "POST /api/free/risk-checker" },
+    { "route": "/dashboard/ai-systems/new", "type": "form", "fields": ["name", "vendor", "purpose", "usage_context", "data_inputs", "decisions", "model", "business_units", "owner_email"], "submit": "POST /api/ai-systems" },
+    { "route": "/dashboard/literacy", "type": "form", "fields": ["person_name", "role", "department", "training_topic", "training_date", "evidence_url", "notes"], "submit": "server action" },
+    { "route": "/settings", "type": "form", "fields": ["full_name", "company_name"], "submit": "server action" },
+    { "route": "/settings/billing", "type": "button", "fields": [], "submit": "POST /api/stripe/checkout or /api/stripe/portal" }
+  ],
+  "external_links": [
+    { "href": "https://piposlab.com", "where": "footer" },
+    { "href": "mailto:alex@piposlab.com", "where": "pricing enterprise CTA" },
+    { "href": "mailto:alejandroebufarini@gmail.com", "where": "terms/privacy/refund pages" }
+  ],
+  "metadata": {
+    "/": {
+      "title": "AIComply — EU AI Act compliance for SMBs",
+      "description": "Inventory every AI tool, auto-classify against the 4 EU AI Act tiers..."
+    },
+    "/pricing": {
+      "title": "Pricing — AIComply",
+      "description": "Per workspace, per month. Free tier (1 AI system, no card)..."
+    },
+    "/free/risk-checker": {
+      "title": "Free EU AI Act Risk Checker — instant classification | AIComply",
+      "description": "Answer 10 yes/no questions about your AI system..."
+    }
+  },
+  "known_bugs_pre_audit": [
+    "login-form.tsx line 205: false SOC 2 Type II claim (FIXED in this audit commit)",
+    "launch-readiness.spec.ts Journey 6: Regulated monthly expectedCents is 29900 but plans.ts says 399 ($39900 cents) — test bug"
+  ]
+}
