@@ -173,6 +173,41 @@ export default function V2PricingPage() {
             Start free, upgrade anytime — Stripe charges immediately on the paid tiers.
             Annual prepaid saves 17%. No per-seat tax on Article 4 literacy.
           </p>
+
+          {/* H4 disqualifier — added 2026-05-21 per declared hypothesis
+              (.shared/methodology/analysis/iteration_state.json domain=landing)
+              Tests whether routing wrong-fit visitors to Praxa lifts conversion
+              of right-fit visitors by 30%+. Measure via PostHog session replay
+              + signup funnel events over 14d, N>=500 sessions. */}
+          <div
+            data-testid="aicomply-disqualifier"
+            style={{
+              marginTop: 28,
+              padding: "14px 18px",
+              borderLeft: "3px solid var(--aic-gold)",
+              background: "var(--aic-paper-1, rgba(0,0,0,0.03))",
+              maxWidth: 720,
+              font: "14px/1.55 var(--aic-font-sans)",
+              color: "var(--aic-fg-l-3)",
+            }}
+          >
+            <strong style={{ color: "var(--aic-fg-l-1)" }}>
+              Not the right fit if&nbsp;
+            </strong>
+            you need code-level provenance for every AI inference your product
+            makes — that&rsquo;s{" "}
+            <a
+              href="https://praxa.piposlab.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "var(--aic-gold)", textDecoration: "underline" }}
+            >
+              Praxa
+            </a>
+            &rsquo;s job. AIComply is the governance dashboard your compliance
+            team uses; Praxa is the hash-chain SDK your engineers install.
+            Many teams need both.
+          </div>
         </div>
       </section>
 

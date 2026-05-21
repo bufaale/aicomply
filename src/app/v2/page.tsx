@@ -86,6 +86,39 @@ export default function V2LandingPage() {
                 See pricing
               </Link>
             </div>
+
+            {/* H4 disqualifier (hero variant — short) — added 2026-05-21
+                per declared hypothesis (domain=landing). Routes wrong-fit
+                visitors (engineers needing code-level provenance) to Praxa
+                BEFORE they bounce off generic-compliance copy. Full version
+                lives above the pricing fold at /pricing. */}
+            <p
+              data-testid="aicomply-disqualifier-hero"
+              style={{
+                marginTop: 18,
+                font: "13px/1.5 var(--aic-font-sans)",
+                color: "rgba(255,255,255,.55)",
+                maxWidth: 540,
+              }}
+            >
+              Engineering team needs code-level provenance for every
+              inference? That&rsquo;s{" "}
+              <a
+                href="https://praxa.piposlab.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: "var(--aic-gold)",
+                  textDecoration: "underline",
+                  textDecorationStyle: "dotted",
+                  textUnderlineOffset: 3,
+                }}
+              >
+                Praxa
+              </a>
+              &rsquo;s job, not AIComply&rsquo;s.
+            </p>
+
             <div
               className="aic-stat-grid-4"
               style={{
