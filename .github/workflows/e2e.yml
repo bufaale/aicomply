@@ -1,12 +1,11 @@
 name: Tests
 
+# Nightly cron removed 2026-09-07 (CI health sweep): axe-core reports critical/serious WCAG violations on /v2 and /v2/pricing; workflow already auto-disabled by GitHub for inactivity; app dormant.
 on:
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
-  schedule:
-    - cron: "0 3 * * *"
   workflow_dispatch:
 
 jobs:
